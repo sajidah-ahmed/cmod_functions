@@ -2,8 +2,9 @@
 Functions for extracting data from Alcator C-Mod
 
 # Prerequisites
-eqtools\
-MDSplus\
+eqtools: https://github.com/PSFCPlasmaTools/eqtools \
+MDSplus: https://www.mdsplus.org/
+
 
 # Installation
 ```
