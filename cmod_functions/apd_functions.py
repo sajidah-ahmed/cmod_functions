@@ -61,7 +61,7 @@ def generate_apd_data(shot_number, location):
 
     Returns:
         times_array: Time array in seconds.
-        signal_array: Unnormalized time series extracted for pixels in the time window of interest.
+        signal_array: Unnormalized time series extracted for pixels.
     """
 
     time_array, frames_array = get_raw_apd_frames(shot_number)
@@ -87,28 +87,20 @@ def generate_apd_data(shot_number, location):
             time[time_array_length - 1] + num * time_step,
             time_step,
         )
-        time = np.append(time, new_times)
+        time_array = np.append(time, new_times)
     elif time_array_length > frame_array_length:
-        time = time[0:frame_array_length]
-
-    time_start, time_end = shot_details.apd_time_dictionary[shot_number]
-    time_interval = (time > time_start) & (time < time_end)
-    frames = frames[time_interval, :, :]
-    time = time[time_interval]
+        time_array = time[0:frame_array_length]
 
     # Choose frames
     location_array_length = len(location)
-    moving_window = 8192
 
     # Create new array of smaller size by chopping one window size on both ends
     signal_array = np.zeros(
         (
             location_array_length,
-            frames[2 * moving_window : -2 * moving_window, 0, 0].size,
+            frames[:, 0, 0].size,
         )
     )
-
-    time_array = time[2 * moving_window : -2 * moving_window]
 
     for i in range(len(location)):
         raw_time_series = frames[:, location[i][0], location[i][1]]
@@ -178,12 +170,17 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
     return rho
 
 
-def major_radius_to_rho(shot_number, location):
+def major_radius_to_rho(shot_number, location, time_slice=False):
 
     R_array, Z_array = get_major_radius_coordinates(shot_number)
 
-    time_start, time_end = shot_details.apd_time_dictionary[shot_number]
-
+    if time_slice:
+        import shot_details
+        time_start, time_end = shot_details.apd_time_dictionary[shot_number]
+    else:
+        time_array, _ = get_raw_apd_frames(shot_number)
+        time_start, time_end = time_array.amin(), time_array.amax()
+        
     # Map R, Z major radius coordinates onto a flux surface
     # Rho is the distance from the last-closed flux surface in centimetres
     location_array_length = len(location)
