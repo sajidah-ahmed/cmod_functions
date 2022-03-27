@@ -115,7 +115,7 @@ def generate_apd_data(shot_number, location):
         signal_array[i, :] = raw_time_series[:]
 
     # Reshape signal array
-    signal_array = np.swapaxes(np.reshape(signal_array, (10, 9, len(time_array))), 0, 1)
+    signal_array = np.swapaxes(np.reshape(signal_array, (9, 10, len(time_array))), 0, 1)
 
     return time_array, signal_array
 
@@ -212,10 +212,10 @@ def major_radius_to_rho(shot_number, location):
     )
 
     rho_mean = np.mean(rho_array, axis=1)
-    time_averaged_rho = np.swapaxes(np.reshape(rho_mean, (10, 9)), 0, 1)
+    time_averaged_rho = np.swapaxes(np.reshape(rho_mean, (9, 10)), 0, 1)
 
     # Reshape array
-    major_radius_R_array = np.swapaxes(np.reshape(major_radius_R, (10, 9)), 0, 1)
-    major_radius_Z_array = np.swapaxes(np.reshape(major_radius_Z, (10, 9)), 0, 1)
+    major_radius_R_array = np.swapaxes(np.reshape(major_radius_R, (9, 10)), 0, 1)
+    major_radius_Z_array = np.swapaxes(np.reshape(major_radius_Z, (9, 10)), 0, 1)
 
     return major_radius_R_array, major_radius_Z_array, time_averaged_rho
