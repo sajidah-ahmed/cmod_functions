@@ -59,10 +59,10 @@ def generate_raw_apd_dataset(shot_number):
 
     Returns:
         dataset: An xarray dataset containing raw APD data for all pixels:
-            times_array: Time array in 100 nanosecond units.
-            frames_array: Raw frames extracted for all pixels. These require further processing before analysis.
-            R_array: Major radius coordinates in centimetres.
-            Z_array: Height array (above the machine midplane) in centimetres.
+            time: Time array in 100 nanosecond units.
+            frames: Raw frames extracted for all pixels. These require further processing before analysis.
+            R: Major radius coordinates in centimetres.
+            Z: Height array (above the machine midplane) in centimetres.
     """
 
     time, frames = get_apd_frames(shot_number)
