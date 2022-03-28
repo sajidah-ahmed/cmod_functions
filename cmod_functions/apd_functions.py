@@ -109,7 +109,7 @@ def generate_raw_apd_dataset(shot_number):
 
     import xarray as xr
 
-    frames = np.swapaxes(np.reshape(frames, (9, 10, len(time))), 0, 1)
+    frames = np.swapaxes(np.reshape(signal_array, (9, 10, len(time))), 0, 1)
 
     dataset = xr.Dataset(
         {"frames": (["y", "x", "time"], frames)},
