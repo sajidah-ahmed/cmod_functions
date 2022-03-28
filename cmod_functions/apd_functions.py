@@ -93,15 +93,11 @@ def generate_raw_apd_dataset(shot_number):
 
     dataset = xr.Dataset(
         {"frames": (["y", "x", "time"], frames)},
-        coords={
-            "R": (["y", "x"], R),
-            "Z": (["y", "x"], Z),
-            "time": (["time"], time)
-        },
+        coords={"R": (["y", "x"], R), "Z": (["y", "x"], Z), "time": (["time"], time)},
     )
 
     return dataset
-    
+
 
 def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
     """
@@ -161,20 +157,22 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
     return rho
 
 
-def major_radius_to_average_rho(shot_number, location, time_slice=False, tree = 'EFIT19'):
+def major_radius_to_average_rho(shot_number, location, time_slice=False, tree="EFIT19"):
     """
     Given the pixel locations and the time slice, this function converts radial and poloidal coordinates to flux surface coordinates, rho.
 
     Args:
         shot_number: Shot number of interest.
         location: Pixel location where pixel = (Z, R). Z is the height (above the machine midplane) and R is the major radius, both in centimetres.
+        time_slice: Time window of the signal to be analysed. Default is 'False' which takes the time range of the APD switched on.
+                    If set 'True' make a shot_details.py script with time windows specified.
         tree: Set this equal to the string of the tree name (e.g. 'efit19') which will be used
                 for the flux surface mapping. The default is 'analysis'
 
     Returns:
         major_radius_R_array: Array of radial coordinates in centimetres.
         major_radius_Z_array: Array of the height in centimetres.
-        time_averaged_rho: The time-averaged flux mapped coordinate in centimetres based on the time window specified. 
+        time_averaged_rho: The time-averaged flux mapped coordinate in centimetres based on the time window specified.
 
     """
 
@@ -182,11 +180,12 @@ def major_radius_to_average_rho(shot_number, location, time_slice=False, tree = 
 
     if time_slice:
         import shot_details
+
         time_start, time_end = shot_details.apd_time_dictionary[shot_number]
     else:
         time_array, _ = get_apd_frames(shot_number)
         time_start, time_end = time_array.amin(), time_array.amax()
-        
+
     # Map R, Z major radius coordinates onto a flux surface
     # Rho is the distance from the last-closed flux surface in centimetres
     location_array_length = len(location)
