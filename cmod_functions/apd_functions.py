@@ -11,8 +11,8 @@ def get_major_radius_coordinates(shot_number: int):
         shot_number: Shot number(s) of interest.
 
     Returns:
-        R_array: Radial coordinates in centimetres.
-        Z_array: Poloidal coordinates in centrimetres.
+        R: Major radius coordinates in centimetres.
+        Z: Height array (above the machine midplane) in centimetres.
     """
 
     c = mds.Connection("alcdata")
@@ -22,10 +22,10 @@ def get_major_radius_coordinates(shot_number: int):
     Z_array_path = "GPI.APD_ARRAY.Z_ARR"
 
     # extract frames, time, radial array and poloidal array
-    R_array = c.get(R_array_path).data()
-    Z_array = c.get(Z_array_path).data()
+    R = c.get(R_array_path).data()
+    Z = c.get(Z_array_path).data()
 
-    return R_array, Z_array
+    return R, Z
 
 
 def get_apd_frames(shot_number: int):
@@ -36,8 +36,8 @@ def get_apd_frames(shot_number: int):
         shot_number: Shot number(s) of interest.
 
     Returns:
-        times_array: Time array in 100 nanosecond units.
-        frames_array: Raw frames extracted for all pixels. These require further processing before analysis.
+        times: Time array in 100 nanosecond units.
+        frames: Raw frames extracted for all pixels. These require further processing before analysis.
     """
 
     c = mds.Connection("alcdata")
