@@ -50,34 +50,30 @@ def get_apd_frames(shot_number):
     return time_array, frames_array
 
 
-def generate_apd_data(shot_number, location):
+def generate_raw_apd_dataset(shot_number):
     """
-    Generate the frames and time array of all the pixels for a shot. You must make a shot_details.py file with
-    the time window of interest for each shot.
+    Generates an xarray dataset containing raw APD data for a shot
 
     Args:
         shot_number: Shot number(s) of interest.
-        location: Locations of pixel(s).
 
     Returns:
-        times_array: Time array in seconds.
-        signal_array: Unnormalized time series extracted for pixels.
+        dataset: An xarray dataset containing raw APD data for all pixels:
+            times_array: Time array in 100 nanosecond units.
+            frames_array: Raw frames extracted for all pixels. These require further processing before analysis.
+            R_array: Major radius coordinates in centimetres.
+            Z_array: Height array (above the machine midplane) in centimetres.
     """
 
-    time_array, frames_array = get_apd_frames(shot_number)
-
-    # Invert voltage
-    frames = -frames_array
-
-    # Convert to seconds
-    time = time_array[-frames.shape[0] :] * 1e-7
+    time, frames = get_apd_frames(shot_number)
+    R, Z = get_major_radius_coordinates(shot_number)
 
     # Sometimes, the time dimension is not the same as the number of frames.
     # need to force them to be the same by adding time points if the time dimension is smaller than the number of frames
     # or cutting the time values off the end of the time array if the time dimension is greater than the number of frames.
 
-    time_array_length = len(time_array)
-    frame_array_length = len(frames_array)
+    time_array_length = len(time)
+    frame_array_length = len(frames)
 
     if time_array_length < frame_array_length:
         time_step = (time[99] - time[0]) / 99.0
@@ -87,30 +83,25 @@ def generate_apd_data(shot_number, location):
             time[time_array_length - 1] + num * time_step,
             time_step,
         )
-        time_array = np.append(time, new_times)
+        time = np.append(time, new_times)
     elif time_array_length > frame_array_length:
-        time_array = time[0:frame_array_length]
+        time = time[0:frame_array_length]
 
-    # Choose frames
-    location_array_length = len(location)
+    import xarray as xr
 
-    # Create new array of smaller size by chopping one window size on both ends
-    signal_array = np.zeros(
-        (
-            location_array_length,
-            frames[:, 0, 0].size,
-        )
+    frames = np.swapaxes(np.reshape(frames, (9, 10, len(time))), 0, 1)
+
+    dataset = xr.Dataset(
+        {"frames": (["y", "x", "time"], frames)},
+        coords={
+            "R": (["y", "x"], R),
+            "Z": (["y", "x"], Z),
+            "time": (["time"], time)
+        },
     )
 
-    for i in range(len(location)):
-        raw_time_series = frames[:, location[i][0], location[i][1]]
-        signal_array[i, :] = raw_time_series[:]
-
-    # Reshape signal array
-    signal_array = np.swapaxes(np.reshape(signal_array, (9, 10, len(time_array))), 0, 1)
-
-    return time_array, signal_array
-
+    return dataset
+    
 
 def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
     """
@@ -178,7 +169,7 @@ def major_radius_to_rho(shot_number, location, time_slice=False):
         import shot_details
         time_start, time_end = shot_details.apd_time_dictionary[shot_number]
     else:
-        time_array, _ = get_raw_apd_frames(shot_number)
+        time_array, _ = get_apd_frames(shot_number)
         time_start, time_end = time_array.amin(), time_array.amax()
         
     # Map R, Z major radius coordinates onto a flux surface
