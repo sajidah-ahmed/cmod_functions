@@ -95,8 +95,7 @@ def generate_raw_apd_dataset(shot_number):
     apd_pixel_list = apd_pixel_list.astype(int).tolist()
     pixel_array_length = len(apd_pixel_list)
 
-    # Create new array of smaller size by chopping one window size on both ends
-    signal_array = np.zeros(
+    apd_signal_array = np.zeros(
         (
             pixel_array_length,
             frames[:, 0, 0].size,
@@ -105,11 +104,11 @@ def generate_raw_apd_dataset(shot_number):
 
     for i in range(len(apd_pixel_list)):
         raw_time_series = frames[:, apd_pixel_list[i][0], apd_pixel_list[i][1]]
-        signal_array[i, :] = raw_time_series[:]
+        apd_signal_array[i, :] = raw_time_series[:]
 
     import xarray as xr
 
-    frames = np.swapaxes(np.reshape(signal_array, (9, 10, len(time))), 0, 1)
+    frames = np.swapaxes(np.reshape(apd_signal_array, (9, 10, len(time))), 0, 1)
 
     dataset = xr.Dataset(
         {"frames": (["y", "x", "time"], frames)},
