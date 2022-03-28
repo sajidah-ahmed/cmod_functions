@@ -28,7 +28,7 @@ def get_major_radius_coordinates(shot_number):
     return R_array, Z_array
 
 
-def get_raw_apd_frames(shot_number):
+def get_apd_frames(shot_number):
     """
     Extracts the frames and time array for a shot.
 
@@ -37,7 +37,7 @@ def get_raw_apd_frames(shot_number):
 
     Returns:
         times_array: Time array in 100 nanosecond units.
-        frames_array: Frames extracted for all pixels.
+        frames_array: Raw frames extracted for all pixels. These require further processing before analysis.
     """
 
     c = mds.Connection("alcdata")
@@ -64,7 +64,7 @@ def generate_apd_data(shot_number, location):
         signal_array: Unnormalized time series extracted for pixels.
     """
 
-    time_array, frames_array = get_raw_apd_frames(shot_number)
+    time_array, frames_array = get_apd_frames(shot_number)
 
     # Invert voltage
     frames = -frames_array
