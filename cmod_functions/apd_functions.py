@@ -161,7 +161,22 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
     return rho
 
 
-def major_radius_to_rho(shot_number, location, time_slice=False):
+def major_radius_to_average_rho(shot_number, location, time_slice=False, tree = 'EFIT19'):
+    """
+    Given the pixel locations and the time slice, this function converts radial and poloidal coordinates to flux surface coordinates, rho.
+
+    Args:
+        shot_number: Shot number of interest.
+        location: Pixel location where pixel = (Z, R). Z is the height (above the machine midplane) and R is the major radius, both in centimetres.
+        tree: Set this equal to the string of the tree name (e.g. 'efit19') which will be used
+                for the flux surface mapping. The default is 'analysis'
+
+    Returns:
+        major_radius_R_array: Array of radial coordinates in centimetres.
+        major_radius_Z_array: Array of the height in centimetres.
+        time_averaged_rho: The time-averaged flux mapped coordinate in centimetres based on the time window specified. 
+
+    """
 
     R_array, Z_array = get_major_radius_coordinates(shot_number)
 
@@ -196,7 +211,7 @@ def major_radius_to_rho(shot_number, location, time_slice=False):
         Z=major_radius_Z,
         time_array=time,
         shot_number=shot_number,
-        tree="EFIT19",
+        tree=tree,
     )
 
     rho_mean = np.mean(rho_array, axis=1)
