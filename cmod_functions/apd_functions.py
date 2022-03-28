@@ -3,7 +3,7 @@ import numpy as np
 import shot_details
 
 
-def get_major_radius_coordinates(shot_number):
+def get_major_radius_coordinates(shot_number: int):
     """
     Extracts the radial and poloidal positions of the pixels in major radius coordinates for shots.
 
@@ -28,7 +28,7 @@ def get_major_radius_coordinates(shot_number):
     return R_array, Z_array
 
 
-def get_apd_frames(shot_number):
+def get_apd_frames(shot_number: int):
     """
     Extracts the frames and time array for a shot.
 
@@ -44,29 +44,8 @@ def get_apd_frames(shot_number):
     c.openTree("spectroscopy", shot_number)
     frames_path = "GPI.APD_ARRAY.FRAMES"
 
-    frames_array = c.get(frames_path).data()
-    time_array = c.get("dim_of(" + frames_path + ")").data()
-
-    return time_array, frames_array
-
-
-def generate_raw_apd_dataset(shot_number):
-    """
-    Generates an xarray dataset containing raw APD data for a shot
-
-    Args:
-        shot_number: Shot number(s) of interest.
-
-    Returns:
-        dataset: An xarray dataset containing raw APD data for all pixels:
-            time: Time array in 100 nanosecond units.
-            frames: Raw frames extracted for all pixels. These require further processing before analysis.
-            R: Major radius coordinates in centimetres.
-            Z: Height array (above the machine midplane) in centimetres.
-    """
-
-    time, frames = get_apd_frames(shot_number)
-    R, Z = get_major_radius_coordinates(shot_number)
+    frames = c.get(frames_path).data()
+    time = c.get("dim_of(" + frames_path + ")").data()
 
     # Sometimes, the time dimension is not the same as the number of frames.
     # need to force them to be the same by adding time points if the time dimension is smaller than the number of frames
@@ -87,6 +66,26 @@ def generate_raw_apd_dataset(shot_number):
     elif time_array_length > frame_array_length:
         time = time[0:frame_array_length]
 
+    return time, frames
+
+
+def generate_raw_apd_dataset(shot_number: int):
+    """
+    Generates an xarray dataset containing raw APD data for a shot
+
+    Args:
+        shot_number: Shot number(s) of interest.
+
+    Returns:
+        dataset: An xarray dataset containing raw APD data for all pixels:
+            time: Time array in 100 nanosecond units.
+            frames: Raw frames extracted for all pixels. These require further processing before analysis.
+            R: Major radius coordinates in centimetres.
+            Z: Height array (above the machine midplane) in centimetres.
+    """
+
+    time, frames = get_apd_frames(shot_number)
+    R, Z = get_major_radius_coordinates(shot_number)
 
     apd_pixel_list = np.zeros((90, 2))
     for i in range(90):
