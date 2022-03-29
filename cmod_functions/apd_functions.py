@@ -159,12 +159,12 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
 
     rho = np.zeros((len(R), len(time_array)))
 
-    for i, ti in enumerate(time_array[:]):
+    for i in range(len(time_array)):
 
         # Rhos is now the array of distances between the R,Z coordinate array
         # points that have been flux-surface-mapped to the height of the
         # magnetic axis MINUS the major radius of the outboard side of the
-        # sepx at the height of the magnetic axis (in cm)
+        # separatrix at the height of the magnetic axis (in cm)
 
         conditional = np.where(
             np.abs(time_array[i] - efit_time)
@@ -202,7 +202,6 @@ def major_radius_to_average_rho(shot_number, time_slice=False, tree="EFIT19"):
     else:
         time_array, _ = get_apd_frames(shot_number)
         time_start, time_end = time_array.amin(), time_array.amax()
-
 
     time = np.arange(time_start, time_end, 0.001)
 
