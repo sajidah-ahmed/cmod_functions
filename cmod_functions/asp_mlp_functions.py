@@ -26,7 +26,7 @@ def get_plunge_depth(shot_number: int):
     c = mds.Connection("alcdata")
     c.openTree("edge", shot_number)
 
-    dataname_plunge = "\edge::top.probes.asp.plunge"
+    dataname_plunge = "\EDGE::TOP.PROBES.ASP.PLUNGE"
 
     plunge = c.get(dataname_plunge).data()
     plunge_time = c.get("dim_of(" + dataname_plunge + ")").data()
@@ -45,7 +45,7 @@ def get_probe_origin(shot_number: int):
         origin: Probe origin giving (R, Z, R*Phi) of the probe, *EXPLAIN R, Z, Phi*
     """
 
-    dataname_origin = "\edge::top.probes.asp.g_1.origin"
+    dataname_origin = "\EDGE::TOP.PROBES.ASP.G_1.ORIGIN"
     c = mds.Connection("alcdata")
     c.openTree("edge", shot_number)
 
@@ -70,7 +70,7 @@ def get_asp_mlp_rho(shot_number, probe_pin_number):
     c = mds.Connection("alcdata")
     c.openTree("edge", shot_number)
 
-    dataname_rho = f"\edge::top.probes.asp.mlp.p{probe_pin_number}:rho"
+    dataname_rho = f"\EDGE::TOP.PROBES.ASP.MLP.P{probe_pin_number}:RHO"
 
     rho = c.get(dataname_rho)
     rho_time = c.get("dim_of(" + dataname_rho + ")").data()
@@ -106,7 +106,7 @@ def get_asp_mlp_data(
     c = mds.Connection("alcdata")
     c.openTree("edge", shot_number)
 
-    dataname = f"\edge::top.probes.asp.mlp.p{probe_pin_number}:{variables_dictionary_asp_mlp[variable_name]}"
+    dataname = f"\EDGE::TOP.PROBES.ASP.MLP.P{probe_pin_number}:{variables_dictionary_asp_mlp[variable_name]}"
 
     asp_mlp_data = c.get(dataname).data()
 
