@@ -1,5 +1,11 @@
 import MDSplus as mds
 
+"""
+Abbreviations:
+    MLP: mirror-Langmuir probe
+    ASP: A-port scanning probe (scans in the horizonal direction)
+"""
+
 # Node names for ASP MLP data, used by get_signal_asp_mlp
 variables_dictionary_asp_mlp = {
     "ne": "DENSITY_FIT",
