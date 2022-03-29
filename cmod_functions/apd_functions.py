@@ -175,26 +175,25 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
     return rho
 
 
-def major_radius_to_average_rho(shot_number, location, time_slice=False, tree="EFIT19"):
+def major_radius_to_average_rho(shot_number, time_slice=False, tree="EFIT19"):
     """
     Given the pixel locations and the time slice, this function converts radial and poloidal coordinates to flux surface coordinates, rho.
 
     Args:
         shot_number: Shot number of interest.
-        location: Pixel location where pixel = (Z, R). Z is the height (above the machine midplane) and R is the major radius, both in centimetres.
         time_slice: Time window of the signal to be analysed. Default is 'False' which takes the time range of the APD switched on.
                     If set 'True' make a shot_details.py script with time windows specified.
         tree: Set this equal to the string of the tree name (e.g. 'efit19') which will be used
                 for the flux surface mapping. The default is 'analysis'
 
     Returns:
-        major_radius_R_array: Array of radial coordinates in centimetres.
-        major_radius_Z_array: Array of the height in centimetres.
+        R: Array of radial coordinates in centimetres.
+        Z: Array of the height in centimetres.
         time_averaged_rho: The time-averaged flux mapped coordinate in centimetres based on the time window specified.
 
     """
 
-    R_array, Z_array = get_major_radius_coordinates(shot_number)
+    R, Z = get_major_radius_coordinates(shot_number)
 
     if time_slice:
         import shot_details
@@ -204,20 +203,25 @@ def major_radius_to_average_rho(shot_number, location, time_slice=False, tree="E
         time_array, _ = get_apd_frames(shot_number)
         time_start, time_end = time_array.amin(), time_array.amax()
 
-    # Map R, Z major radius coordinates onto a flux surface
-    # Rho is the distance from the last-closed flux surface in centimetres
-    location_array_length = len(location)
+
     time = np.arange(time_start, time_end, 0.001)
+
+    apd_pixel_list = np.zeros((90, 2))
+    for i in range(90):
+        apd_pixel_list[i] = (i % 10, int(i / 10))
+
+    apd_pixel_list = apd_pixel_list.astype(int).tolist()
+    pixel_array_length = len(apd_pixel_list)
 
     # Make a list of the R, Z coordinates
     major_radius_position = []
 
-    for i in range(location_array_length):
+    for i in range(pixel_array_length):
 
-        R = R_array[location[i][0], location[i][1]]
-        Z = Z_array[location[i][0], location[i][1]]
+        R_position = R[apd_pixel_list[i][0], apd_pixel_list[i][1]]
+        Z_position = Z[apd_pixel_list[i][0], apd_pixel_list[i][1]]
 
-        RZ_pair = [R, Z]
+        RZ_pair = [R_position, Z_position]
         major_radius_position.append(RZ_pair)
 
     major_radius_R = np.array(major_radius_position)[:, 0]
@@ -234,8 +238,4 @@ def major_radius_to_average_rho(shot_number, location, time_slice=False, tree="E
     rho_mean = np.mean(rho_array, axis=1)
     time_averaged_rho = np.swapaxes(np.reshape(rho_mean, (9, 10)), 0, 1)
 
-    # Reshape array
-    major_radius_R_array = np.swapaxes(np.reshape(major_radius_R, (9, 10)), 0, 1)
-    major_radius_Z_array = np.swapaxes(np.reshape(major_radius_Z, (9, 10)), 0, 1)
-
-    return major_radius_R_array, major_radius_Z_array, time_averaged_rho
+    return R, Z, time_averaged_rho
