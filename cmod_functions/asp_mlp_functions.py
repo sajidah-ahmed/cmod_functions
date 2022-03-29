@@ -6,7 +6,7 @@ Abbreviations:
     ASP: A-port scanning probe (scans in the horizonal direction)
 """
 
-# Node names for ASP MLP data, used by get_signal_asp_mlp
+# Node names for ASP MLP data. Use this convention.
 variables_dictionary_asp_mlp = {
     "ne": "DENSITY_FIT",
     "Is": "ISAT_FIT",
