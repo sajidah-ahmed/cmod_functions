@@ -103,6 +103,10 @@ def generate_raw_apd_dataset(shot_number: int):
 
     for i in range(len(apd_pixel_list)):
         raw_time_series = frames[:, apd_pixel_list[i][0], apd_pixel_list[i][1]]
+        
+        # Criterion to find dead pixels
+        if raw_time_series.std() < 0.01:
+            raw_time_series[:] = np.nan
         apd_signal_array[i, :] = raw_time_series[:]
 
     import xarray as xr
@@ -238,3 +242,4 @@ def major_radius_to_average_rho(shot_number, time_slice=False, tree="EFIT19"):
     time_averaged_rho = np.swapaxes(np.reshape(rho_mean, (9, 10)), 0, 1)
 
     return R, Z, time_averaged_rho
+
