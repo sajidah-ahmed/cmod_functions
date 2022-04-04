@@ -78,13 +78,17 @@ def generate_raw_apd_dataset(shot_number: int):
 
     Returns:
         dataset: An xarray dataset containing raw APD data for all pixels:
-            time: Time array in 100 nanosecond units.
+            time: Time array in seconds.
             frames: Raw frames extracted for all pixels. These require further processing before analysis.
             R: Major radius coordinates in centimetres.
             Z: Height array (above the machine midplane) in centimetres.
     """
 
     time, frames = get_apd_frames(shot_number)
+    
+    # Convert time from 100 nanosecond units to seconds
+    time = time * 1e-7
+
     R, Z = get_major_radius_coordinates(shot_number)
 
     apd_pixel_list = np.zeros((90, 2))
