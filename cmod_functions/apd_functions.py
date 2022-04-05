@@ -111,12 +111,12 @@ def generate_raw_apd_dataset(shot_number: int):
         # Criterion to find dead pixels
         if raw_time_series.std() < 0.01:
             raw_time_series[:] = np.nan
+        else:
+            # Take into account the offset
+            offset = np.mean(raw_time_series[:200])
+            raw_time_series = -(offset - raw_time_series[:])
 
-        # Take into account the offset
-        offset = np.mean(raw_time_series[:200])
-        new_time_series = offset - raw_time_series[:]
-
-        apd_signal_array[i, :] = new_time_series[:]
+        apd_signal_array[i, :] = raw_time_series[:]
 
     import xarray as xr
 
