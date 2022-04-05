@@ -69,7 +69,7 @@ def get_apd_frames(shot_number: int):
     return time, frames
 
 
-def generate_raw_apd_dataset(shot_number: int):
+def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
     """
     Generates an xarray dataset containing raw APD data for a shot
 
@@ -121,6 +121,11 @@ def generate_raw_apd_dataset(shot_number: int):
     import xarray as xr
 
     frames = np.swapaxes(np.reshape(apd_signal_array, (9, 10, len(time))), 0, 1)
+
+    if (time_start is not None) & (time_end is not None):
+        time_interval = (time > time_start) & (time < time_end)
+        frames = frames[:,:,time_interval]
+        time = time[time_interval]
 
     dataset = xr.Dataset(
         {"frames": (["y", "x", "time"], frames)},
