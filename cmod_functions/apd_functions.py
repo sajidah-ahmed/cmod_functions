@@ -114,7 +114,7 @@ def generate_raw_apd_dataset(shot_number: int):
         else:
             # Take into account the offset
             offset = np.mean(raw_time_series[:200])
-            raw_time_series = -(offset - raw_time_series[:])
+            raw_time_series = offset - raw_time_series[:]
 
         apd_signal_array[i, :] = raw_time_series[:]
 
