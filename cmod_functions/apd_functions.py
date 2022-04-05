@@ -195,14 +195,14 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
     return rho
 
 
-def major_radius_to_average_rho(shot_number, time_slice=False, tree="EFIT19"):
+def major_radius_to_average_rho(shot_number, time_start=None, time_end=None, tree="EFIT19"):
     """
     Given the pixel locations and the time slice, this function converts radial and poloidal coordinates to flux surface coordinates, rho.
 
     Args:
         shot_number: Shot number of interest.
-        time_slice: Time window of the signal to be analysed. Default is 'False' which takes the time range of the APD switched on.
-                    If set 'True' make a shot_details.py script with time windows specified.
+        time_start: The beginning of the time window in seconds. Set to None by default.
+        time_end: The end of the time window in seconds. Set to None by default.
         tree: Set this equal to the string of the tree name (e.g. 'efit19') which will be used
                 for the flux surface mapping. The default is 'analysis'
 
@@ -215,10 +215,8 @@ def major_radius_to_average_rho(shot_number, time_slice=False, tree="EFIT19"):
 
     R, Z = get_major_radius_coordinates(shot_number)
 
-    if time_slice:
-        import shot_details
-
-        time_start, time_end = shot_details.apd_time_dictionary[shot_number]
+    if (time_start is not None) & (time_end is not None):
+        time_start, time_end = time_start, time_end
     else:
         time_array, _ = get_apd_frames(shot_number)
         time_start, time_end = time_array.amin(), time_array.amax()
