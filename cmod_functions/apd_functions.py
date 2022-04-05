@@ -215,9 +215,7 @@ def major_radius_to_average_rho(shot_number, time_start=None, time_end=None, tre
 
     R, Z = get_major_radius_coordinates(shot_number)
 
-    if (time_start is not None) & (time_end is not None):
-        time_start, time_end = time_start, time_end
-    else:
+    if (time_start is None) & (time_end is None):
         time_array, _ = get_apd_frames(shot_number)
         time_start, time_end = time_array.amin(), time_array.amax()
 
