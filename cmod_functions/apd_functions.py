@@ -75,6 +75,8 @@ def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
 
     Args:
         shot_number: Shot number(s) of interest.
+        time_start: The beginning of the time window in seconds. Set to None by default.
+        time_end: The end of the time window in seconds. Set to None by default.
 
     Returns:
         dataset: An xarray dataset containing raw APD data for all pixels:
