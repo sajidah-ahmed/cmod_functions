@@ -87,11 +87,12 @@ def get_outergap_EFIT(shot_number, tree="ANALYSIS"):
     """
 
     c = mds.Connection("alcdata")
-    c.openTree("spectroscopy", shot_number)
 
     if tree == "EFIT19":
+        c.openTree(tree, shot_number)
         tree_path = "EFIT19::TOP.RESULTS.A_EQDSK:ORIGHT"
     else:
+        c.openTree(tree, shot_number)
         tree_path = "ANALYSIS::EFIT_AEQDSK:ORIGHT"
 
     outergap_EFIT = c.get(tree_path)
