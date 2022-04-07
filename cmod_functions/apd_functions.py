@@ -69,30 +69,30 @@ def get_apd_frames(shot_number: int):
     return time, frames
 
 
-def get_outergap_EFIT(shot_number, tree='EFIT19'):
+def get_outergap_EFIT(shot_number, tree="EFIT19"):
     """
     Extracts the data on the outergap determined by EFIT.
 
     Args:
         shot_number: Shot number(s) of interest.
-        tree: Which EFIT data you want. 
+        tree: Which EFIT data you want.
               EFIT19 is a higher resolution compared to ANALYSIS.
               This is case sensisitve, so use capitals.
 
     Returns:
         time_outergap_EFIT: Time data of the EFIT data in seconds.
         outergap_EFIT: Outergap determined by EFIT in millimetres.
-        
+
     """
 
-    c = mds.Connection('alcdata')
-    c.openTree('spectroscopy',shot_number)
+    c = mds.Connection("alcdata")
+    c.openTree("spectroscopy", shot_number)
 
-    if tree == 'EFIT19':
+    if tree == "EFIT19":
         tree_path = "EFIT19::TOP.RESULTS.A_EQDSK:ORIGHT"
-    elif tree == 'ANALYSIS':
+    elif tree == "ANALYSIS":
         tree_path = "ANALYSIS::EFIT_AEQDSK:ORIGHT"
-    
+
     outergap_EFIT = c.get(tree_path)
     time_outergap_EFIT = c.get("dim_of(" + tree_path + ")").data()
 
@@ -117,7 +117,7 @@ def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
     """
 
     time, frames = get_apd_frames(shot_number)
-    
+
     # Convert time from 100 nanosecond units to seconds
     time = time * 1e-7
 
@@ -156,7 +156,7 @@ def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
 
     if (time_start is not None) & (time_end is not None):
         time_interval = (time > time_start) & (time < time_end)
-        frames = frames[:,:,time_interval]
+        frames = frames[:, :, time_interval]
         time = time[time_interval]
 
     dataset = xr.Dataset(
@@ -225,7 +225,9 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
     return rho
 
 
-def major_radius_to_average_rho(shot_number, time_start=None, time_end=None, tree="EFIT19"):
+def major_radius_to_average_rho(
+    shot_number, time_start=None, time_end=None, tree="EFIT19"
+):
     """
     Given the pixel locations and the time slice, this function converts radial and poloidal coordinates to flux surface coordinates, rho.
 
