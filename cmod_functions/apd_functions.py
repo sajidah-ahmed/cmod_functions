@@ -69,6 +69,36 @@ def get_apd_frames(shot_number: int):
     return time, frames
 
 
+def get_outergap_EFIT(shot_number, tree='EFIT19'):
+    """
+    Extracts the data on the outergap determined by EFIT.
+
+    Args:
+        shot_number: Shot number(s) of interest.
+        tree: Which EFIT data you want. 
+              EFIT19 is a higher resolution compared to ANALYSIS.
+              This is case sensisitve, so use capitals.
+
+    Returns:
+        time_outergap_EFIT: Time data of the EFIT data in seconds.
+        outergap_EFIT: Outergap determined by EFIT in millimetres.
+        
+    """
+
+    c = mds.Connection('alcdata')
+    c.openTree('spectroscopy',shot_number)
+
+    if tree == 'EFIT19':
+        tree_path = "EFIT19::TOP.RESULTS.A_EQDSK:ORIGHT"
+    elif tree == 'ANALYSIS':
+        tree_path = "ANALYSIS::EFIT_AEQDSK:ORIGHT"
+    
+    outergap_EFIT = c.get(tree_path)
+    time_outergap_EFIT = c.get("dim_of(" + tree_path + ")").data()
+
+    return time_outergap_EFIT, outergap_EFIT
+
+
 def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
     """
     Generates an xarray dataset containing raw APD data for a shot
