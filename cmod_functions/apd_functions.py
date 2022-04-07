@@ -242,7 +242,7 @@ def major_radius_to_average_rho(
     Returns:
         R: Array of radial coordinates in centimetres.
         Z: Array of the height in centimetres.
-        time_averaged_rho: The time-averaged flux mapped coordinate in centimetres based on the time window specified.
+        rho_time_averaged: The time-averaged flux mapped coordinate in centimetres based on the time window specified.
 
     """
 
@@ -284,6 +284,6 @@ def major_radius_to_average_rho(
     )
 
     rho_mean = np.mean(rho_array, axis=1)
-    time_averaged_rho = np.swapaxes(np.reshape(rho_mean, (9, 10)), 0, 1)
+    rho_time_averaged = np.swapaxes(np.reshape(rho_mean, (9, 10)), 0, 1)
 
-    return R, Z, time_averaged_rho
+    return R, Z, rho_time_averaged
