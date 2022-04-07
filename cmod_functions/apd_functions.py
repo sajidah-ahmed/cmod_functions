@@ -69,7 +69,7 @@ def get_apd_frames(shot_number: int):
     return time, frames
 
 
-def get_outergap_EFIT(shot_number, tree="ANALYSIS"):
+def get_outergap_efit(shot_number, tree="ANALYSIS"):
     """
     Extracts the data on the outergap determined by EFIT.
 
@@ -95,10 +95,10 @@ def get_outergap_EFIT(shot_number, tree="ANALYSIS"):
         c.openTree('analysis', shot_number)
         tree_path = "\ANALYSIS::EFIT_AEQDSK:ORIGHT"
 
-    outergap_EFIT = c.get(tree_path)
-    time_outergap_EFIT = c.get("dim_of(" + tree_path + ")").data()
+    outergap_efit = c.get(tree_path)
+    time_outergap_efit = c.get("dim_of(" + tree_path + ")").data()
 
-    return time_outergap_EFIT, outergap_EFIT
+    return time_outergap_efit, outergap_efit
 
 
 def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
