@@ -69,14 +69,15 @@ def get_apd_frames(shot_number: int):
     return time, frames
 
 
-def get_outergap_EFIT(shot_number, tree="EFIT19"):
+def get_outergap_EFIT(shot_number, tree="ANALYSIS"):
     """
     Extracts the data on the outergap determined by EFIT.
 
     Args:
         shot_number: Shot number(s) of interest.
         tree: Which EFIT data you want.
-              EFIT19 is a higher resolution compared to ANALYSIS.
+              By default, this is set to "ANALYSIS" which is a lower resolution EFIT.
+              The other option is "EFIT19" which is a higher resolution EFIT.
               This is case sensisitve, so use capitals.
 
     Returns:
@@ -90,7 +91,7 @@ def get_outergap_EFIT(shot_number, tree="EFIT19"):
 
     if tree == "EFIT19":
         tree_path = "EFIT19::TOP.RESULTS.A_EQDSK:ORIGHT"
-    elif tree == "ANALYSIS":
+    else:
         tree_path = "ANALYSIS::EFIT_AEQDSK:ORIGHT"
 
     outergap_EFIT = c.get(tree_path)
