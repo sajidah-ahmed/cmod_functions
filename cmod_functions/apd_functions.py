@@ -72,6 +72,8 @@ def get_apd_frames(shot_number: int):
 def get_outergap_efit(shot_number, tree="ANALYSIS"):
     """
     Extracts the data on the outergap determined by EFIT.
+    The outergap is the distance of limiter surface relative to the separatrix.
+    More details about EFIT are here: https://omfit.io/modules/mod_EFIT.html
 
     Args:
         shot_number: Shot number(s) of interest.
