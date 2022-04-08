@@ -208,7 +208,7 @@ def major_radius_to_average_rho(
                   If using tree 'efit19', you need to have had someone run EFIT19 for you the time window you asked for.
         resolution: Time resolution of EFIT - this needs to be correct, otherwise it'll crash.
                     By default this is 0.02 seconds for the 'analysis' tree.
-                    For 'efit19' this is 0.001 seconds. 
+                    For 'efit19' this is 0.001 seconds.
         tree: Set this equal to the string of the tree name (e.g. 'efit19') which will be used
               for the flux surface mapping. The default is 'analysis'
 
