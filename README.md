@@ -7,10 +7,8 @@ Please be aware that eqtools may not be fully Python3 compatible.\
 ````
 cd eqtools/eqtools
 vim core.py
-# Replace:
-import trispline
-# With:
-from . import trispline
+# Replace: import trispline
+# With: from . import trispline
 ````
 
 MDSplus: https://www.mdsplus.org/
