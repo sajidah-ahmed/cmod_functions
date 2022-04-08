@@ -136,7 +136,7 @@ def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
     return dataset
 
 
-def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree='ANALYSIS'):
+def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree=None):
     """
     Converts radial and poloidal coordinates to flux surface coordinates, rho.
 
@@ -164,7 +164,10 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree='ANALYSIS'):
     import eqtools as eq
     import numpy as np
 
-    cmod_efit = eq.CModEFITTree(shot_number, tree)
+    if tree is None:
+        cmod_efit = eq.CModEFITTree(shot_number)
+    else:
+        cmod_efit = eq.CModEFITTree(shot_number, tree)
 
     # Major radii (in m) of the R,Z coordinate arrays
     # flux-surface-mapped to the height of the magnetic axis at each
@@ -195,7 +198,7 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree='ANALYSIS'):
 
 
 def major_radius_to_average_rho(
-    shot_number, time_start=None, time_end=None, tree='ANALYSIS'
+    shot_number, time_start=None, time_end=None, tree=None
 ):
     """
     Given the pixel locations and the time slice, this function converts radial and poloidal coordinates to flux surface coordinates, rho.
@@ -247,8 +250,8 @@ def major_radius_to_average_rho(
         R=major_radius_R,
         Z=major_radius_Z,
         time_array=time,
-        shot_number=shot_number,
-        tree=tree,
+        shot_number=shot_number, 
+        tree=tree
     )
 
     rho_mean = np.mean(rho_array, axis=1)
