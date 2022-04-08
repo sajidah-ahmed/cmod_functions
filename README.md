@@ -3,6 +3,7 @@ Functions for extracting data from Alcator C-Mod
 
 # Prerequisites
 eqtools: https://github.com/PSFCPlasmaTools/eqtools \
+Please be aware that eqtools may not be fully Python3 compatible.\
 MDSplus: https://www.mdsplus.org/
 
 
