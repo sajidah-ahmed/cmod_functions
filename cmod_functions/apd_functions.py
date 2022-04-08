@@ -136,8 +136,9 @@ def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
     return dataset
 
 
-def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree='analysis'):
+def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree="analysis"):
     import eqtools as eq
+
     """
     Converts radial and poloidal coordinates to flux surface coordinates, rho.
 
@@ -161,28 +162,30 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree='analysis'):
             the separatrix and minus sign being inside the separatrix.
 
     """
-    e = eq.CModEFITTree(shot_number,tree)
+    e = eq.CModEFITTree(shot_number, tree)
 
     # Major radii (in m) of the R,Z coordinate arrays
     # flux-surface-mapped to the height of the magnetic axis at each
     # time of the time_array. NOTE: that the time index is the 1st one, the space index is the 2nd!
 
-    rmid=e.rz2rmid(R/100.,Z/100.,time_array)
+    rmid = e.rz2rmid(R / 100.0, Z / 100.0, time_array)
 
     # rmidout is the major radius of the outboard side of the separatrix at the
     # height of the magnetic axis (m)
     rmidout = e.getRmidOut()
-        # rmidout is the major radius of the outboard side of the sepx at the
-        # height of the magnetic axis (m)
+    # rmidout is the major radius of the outboard side of the sepx at the
+    # height of the magnetic axis (m)
     efit_t = e.getTimeBase()
 
-    rho=np.zeros((len(R),len(time_array)))
+    rho = np.zeros((len(R), len(time_array)))
 
     for i, ti in enumerate(time_array[:]):
 
-        nn = np.where(np.abs(time_array[i]-efit_t) == np.amin(np.abs(time_array[i]-efit_t)))
+        nn = np.where(
+            np.abs(time_array[i] - efit_t) == np.amin(np.abs(time_array[i] - efit_t))
+        )
 
-        rho[:,i]=(rmid[i,:] - rmidout[nn])*100.
+        rho[:, i] = (rmid[i, :] - rmidout[nn]) * 100.0
         # Rhos is now the array of distances between the R,Z coordinate array
         # points that have been flux-surface-mapped to the height of the
         # magnetic axis MINUS the major radius of the outboard side of the
@@ -192,7 +195,7 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree='analysis'):
 
 
 def major_radius_to_average_rho(
-    shot_number, time_start=None, time_end=None, resolution=0.02, tree='analysis'
+    shot_number, time_start=None, time_end=None, resolution=0.02, tree="analysis"
 ):
     """
     Given the pixel locations and the time slice, this function converts radial and poloidal coordinates to flux surface coordinates, rho.
@@ -246,8 +249,8 @@ def major_radius_to_average_rho(
         R=major_radius_R,
         Z=major_radius_Z,
         time_array=time,
-        shot_number=shot_number, 
-        tree=tree
+        shot_number=shot_number,
+        tree=tree,
     )
 
     rho_mean = np.mean(rho_array, axis=1)
