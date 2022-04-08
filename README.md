@@ -12,7 +12,9 @@ vim core.py
 # Save the file.
 ````
 
-MDSplus: https://www.mdsplus.org/
+MDSplus: https://www.mdsplus.org/ \
+
+Xarray: https://docs.xarray.dev/en/stable/getting-started-guide/installing.html
 
 
 # Installation
