@@ -136,7 +136,7 @@ def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
     return dataset
 
 
-def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
+def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree='ANALYSIS'):
     """
     Converts radial and poloidal coordinates to flux surface coordinates, rho.
 
@@ -195,7 +195,7 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
 
 
 def major_radius_to_average_rho(
-    shot_number, time_start=None, time_end=None, tree="EFIT19"
+    shot_number, time_start=None, time_end=None, tree="ANALYSIS"
 ):
     """
     Given the pixel locations and the time slice, this function converts radial and poloidal coordinates to flux surface coordinates, rho.
