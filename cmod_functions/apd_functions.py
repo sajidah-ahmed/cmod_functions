@@ -195,7 +195,7 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree='ANALYSIS'):
 
 
 def major_radius_to_average_rho(
-    shot_number, time_start=None, time_end=None, tree="ANALYSIS"
+    shot_number, time_start=None, time_end=None, tree='ANALYSIS'
 ):
     """
     Given the pixel locations and the time slice, this function converts radial and poloidal coordinates to flux surface coordinates, rho.
