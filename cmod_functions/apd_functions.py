@@ -221,7 +221,7 @@ def major_radius_to_average_rho(
 
     if (time_start is None) & (time_end is None):
         time_array, _ = get_apd_frames(shot_number)
-        time_start, time_end = time_array.amin(), time_array.amax()
+        time_start, time_end = time_array.min(), time_array.max()
 
     time = np.arange(time_start, time_end, 0.001)
 
