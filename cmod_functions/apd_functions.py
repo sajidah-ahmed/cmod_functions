@@ -203,11 +203,14 @@ def major_radius_to_average_rho(
     Args:
         shot_number: Shot number of interest.
         time_start: The beginning of the time window in seconds. Set to None by default.
+                    If using tree = 'efit19', you need to have had someone run EFIT19 for you the time window you asked for.
         time_end: The end of the time window in seconds. Set to None by default.
-        resolution: Time resolution of EFIT. By default this is 0.02 seconds for the 'analysis' tree.
-                    For 'efit19' this is 0.001 seconds.
+                  If using tree 'efit19', you need to have had someone run EFIT19 for you the time window you asked for.
+        resolution: Time resolution of EFIT - this needs to be correct, otherwise it'll crash.
+                    By default this is 0.02 seconds for the 'analysis' tree.
+                    For 'efit19' this is 0.001 seconds. 
         tree: Set this equal to the string of the tree name (e.g. 'efit19') which will be used
-                for the flux surface mapping. The default is 'analysis'
+              for the flux surface mapping. The default is 'analysis'
 
     Returns:
         R: Array of radial coordinates in centimetres.
