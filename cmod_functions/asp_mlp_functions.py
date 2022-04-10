@@ -62,7 +62,7 @@ def get_probe_origin(shot_number: int):
     return origin
 
 
-def get_asp_mlp_rho(shot_number, probe_pin_number):
+def get_asp_mlp_rho(shot_number: int, probe_pin_number: int):
     """
     Extracts the rho, the distance relative to the last-closed flux surface, of a probe tip.
 
@@ -87,7 +87,7 @@ def get_asp_mlp_rho(shot_number, probe_pin_number):
 
 
 def get_raw_asp_mlp_data(
-    shot_number, probe_pin_number, variable_name, time_start=None, time_end=None
+    shot_number: int, probe_pin_number: int, variable_name: str, time_start=None, time_end=None
 ):
     """
     Extracts raw mirror-Langmuir probe (MLP) data.
@@ -127,7 +127,7 @@ def get_raw_asp_mlp_data(
     return asp_mlp_time, asp_mlp_data
 
 
-def generate_raw_scanning_mlp_data(shot_number, variable_name):
+def generate_raw_scanning_mlp_data(shot_number: int, variable_name: str):
     """
     Extracts raw scanning mirror-Langmuir probe (MLP) data.
 
