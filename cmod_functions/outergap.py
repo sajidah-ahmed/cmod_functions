@@ -12,7 +12,8 @@ def get_outergap_efit(shot_number, tree="ANALYSIS"):
         shot_number: Shot number(s) of interest.
         tree: Which EFIT data you want.
               By default, this is set to "ANALYSIS" which is a lower resolution EFIT.
-              The other option is "EFIT19" which is a higher resolution EFIT.
+              The other option is "EFIT19" which is a higher resolution EFIT. 
+              Not all shots have EFIT19 data!
               This is case sensisitve, so use capitals.
 
     Returns:
