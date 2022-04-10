@@ -1,5 +1,5 @@
 # cmod_functions
-Functions for extracting data from Alcator C-Mod
+Functions for extracting data from Alcator C-Mod while on the MFE cluster.
 
 # Prerequisites
 eqtools: https://github.com/PSFCPlasmaTools/eqtools \
@@ -12,7 +12,7 @@ vim core.py
 # Save the file.
 ````
 
-MDSplus: https://www.mdsplus.org/ \
+MDSplus: https://www.mdsplus.org/
 
 Xarray: https://docs.xarray.dev/en/stable/getting-started-guide/installing.html
 
