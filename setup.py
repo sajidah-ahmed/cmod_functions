@@ -17,9 +17,9 @@ setup(
     license="MiT",
     version="1.0",
     packages=['cmod_functions'],
-    python_requires=">=3.0",
+    python_requires=">=3.8",
     install_requires=[
-        "numpy>=1.15.0",
+        "numpy>=1.18.0",
         "scipy>=1.4.0",
         "matplotlib>=3.2.0",
         "xarray>=0.16.2",
