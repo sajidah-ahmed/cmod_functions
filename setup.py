@@ -22,7 +22,10 @@ setup(
         "numpy>=1.15.0",
         "scipy>=1.4.0",
         "matplotlib>=3.2.0",
-        "xarray>=0.16.2"
+        "xarray>=0.16.2",
+        "dask",
+        "netCDF4",
+        "bottleneck"
     ],
     classifiers=[
         "Intended Audience :: Education",
