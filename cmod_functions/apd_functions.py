@@ -79,7 +79,7 @@ def generate_raw_apd_dataset(
         shot_number: Shot number(s) of interest.
         time_start: The beginning of the time window in seconds. Set to None by default.
         time_end: The end of the time window in seconds. Set to None by default.
-        subtract_backgound: Option to subtract low light levels which will return an inverted signal.
+        subtract_background: Option to subtract low light levels which will return an inverted signal.
                             Default to False, where this will return just the raw signal, uninverted.
 
     Returns:
