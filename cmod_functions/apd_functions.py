@@ -111,6 +111,7 @@ def generate_raw_apd_dataset(
 def _create_apd_signal_array(frames, moving_window, subtract_background):
     """
     Creates an APD signal array from the raw APD frames.
+    Time series of dead pixels are replaces with nan values.
 
     Args:
         frames: Raw frames extracted for all pixels.
