@@ -87,7 +87,11 @@ def get_asp_mlp_rho(shot_number: int, probe_pin_number: int):
 
 
 def get_raw_asp_mlp_data(
-    shot_number: int, probe_pin_number: int, variable_name: str, time_start=None, time_end=None
+    shot_number: int,
+    probe_pin_number: int,
+    variable_name: str,
+    time_start=None,
+    time_end=None,
 ):
     """
     Extracts raw mirror-Langmuir probe (MLP) data.
@@ -168,7 +172,8 @@ def generate_raw_scanning_mlp_data(shot_number: int, variable_name: str):
 
     for probe_pin_number in [0, 1, 2, 3]:
         asp_mlp_time, asp_mlp_data = get_raw_asp_mlp_data(
-            variable_name, probe_pin_number, shot_number)
+            variable_name, probe_pin_number, shot_number
+        )
 
         rho_time, rho = get_asp_mlp_rho(shot_number, probe_pin_number)
 
@@ -180,12 +185,7 @@ def generate_raw_scanning_mlp_data(shot_number: int, variable_name: str):
     time_common = reduce(np.intersect1d, time_list)
     rho_time = rho_time_list[0]
 
-    rho_average = 0.25 * (
-        rho_list[0]
-        + rho_list[1]
-        + rho_list[2]
-        + rho_list[3]
-    )
+    rho_average = 0.25 * (rho_list[0] + rho_list[1] + rho_list[2] + rho_list[3])
 
     # Interpolate plunge onto the MLP timebase
     probe_rho_interpolate = interp1d(rho_time, rho_average)
@@ -198,4 +198,11 @@ def generate_raw_scanning_mlp_data(shot_number: int, variable_name: str):
         + time_series_list[3]
     )
 
-    return time_common, time_series_average, rho_time, probe_rho_time, rho_average, plunge_radius
+    return (
+        time_common,
+        time_series_average,
+        rho_time,
+        probe_rho_time,
+        rho_average,
+        plunge_radius,
+    )
