@@ -68,7 +68,9 @@ def get_apd_frames(shot_number: int):
     return time, frames
 
 
-def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
+def generate_raw_apd_dataset(
+    shot_number: int, time_start=None, time_end=None, subtract_background=False
+):
     """
     Generates an xarray dataset containing raw APD data for a shot
 
@@ -76,7 +78,8 @@ def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
         shot_number: Shot number(s) of interest.
         time_start: The beginning of the time window in seconds. Set to None by default.
         time_end: The end of the time window in seconds. Set to None by default.
-        subtract_backgound: Option to subtract low light levels. Default to False.
+        subtract_backgound: Option to subtract low light levels which will return an inverted signal.
+                            Default to False, where this will return just the raw signal, uninverted.
 
     Returns:
         dataset: An xarray dataset containing raw APD data for all pixels:
@@ -100,24 +103,29 @@ def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
     apd_pixel_list = apd_pixel_list.astype(int).tolist()
     pixel_array_length = len(apd_pixel_list)
 
+    # Each pixel may not have the same time dimension as each other.
+    # Chop one window size on both ends
+
+    moving_window = 4196  # Equivalent to 2ms of data
     apd_signal_array = np.zeros(
-        (
-            pixel_array_length,
-            frames[:, 0, 0].size,
-        )
+        (pixel_array_length, frames[2 * moving_window : -2 * moving_window, 0, 0].size)
     )
 
+    time = time[2 * moving_window : -2 * moving_window]
+
     for i in range(len(apd_pixel_list)):
-        raw_time_series = frames[:, apd_pixel_list[i][0], apd_pixel_list[i][1]]
+        raw_signal = frames[:, apd_pixel_list[i][0], apd_pixel_list[i][1]]
 
         # Criterion to find dead pixels
-        if raw_time_series.std() < 0.01:
-            raw_time_series[:] = np.nan
+        if raw_signal.std() < 0.01:
+            raw_signal[:] = np.nan
         else:
-            offset = np.mean(raw_time_series[:200])
-            raw_time_series = offset - raw_time_series[:]
+            if subtract_background:
+                offset = np.mean(raw_signal[:200])
+                raw_signal = offset - raw_signal[:]
 
-        apd_signal_array[i, :] = raw_time_series[:]
+        time_series = raw_signal[2 * moving_window : -2 * moving_window]
+        apd_signal_array[i, :] = time_series[:]
 
     import xarray as xr
 
