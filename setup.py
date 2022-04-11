@@ -16,7 +16,7 @@ setup(
     url="https://github.com/sajidah-ahmed/cmod_functions",
     license="MiT",
     version="1.0",
-    packages=['cmod_functions'],
+    packages=["cmod_functions"],
     python_requires=">=3.8",
     install_requires=[
         "numpy>=1.18.0",
@@ -25,7 +25,7 @@ setup(
         "xarray>=0.16.2",
         "dask",
         "netCDF4",
-        "bottleneck"
+        "bottleneck",
     ],
     classifiers=[
         "Intended Audience :: Education",
