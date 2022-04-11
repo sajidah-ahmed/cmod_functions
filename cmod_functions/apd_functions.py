@@ -68,7 +68,7 @@ def get_apd_frames(shot_number: int):
     return time, frames
 
 
-def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
+def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None, subtract_background=False):
     """
     Generates an xarray dataset containing raw APD data for a shot
 
@@ -113,9 +113,9 @@ def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None):
         if raw_time_series.std() < 0.01:
             raw_time_series[:] = np.nan
         else:
-            # Take into account the offset
-            offset = np.mean(raw_time_series[:200])
-            raw_time_series = offset - raw_time_series[:]
+            if subtract_background:
+                offset = np.mean(raw_time_series[:200])
+                raw_time_series = offset - raw_time_series[:]
 
         apd_signal_array[i, :] = raw_time_series[:]
 
