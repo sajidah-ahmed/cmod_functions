@@ -35,7 +35,7 @@ def get_plasma_current(shot_number):
 
     Returns:
         plasma_current_time: Time data for the plasma current data.
-        plasma_current: Plasma current measures in  kA.
+        plasma_current: Plasma current measures in  kilo Amps.
                         Negative sign means it's in the normal field direction.
                         Positive sign means it's in the reverse field direction.
     """
