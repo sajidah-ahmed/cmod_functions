@@ -1,7 +1,5 @@
 import MDSplus as mds
 
-from cmod_functions.apd_functions import generate_raw_apd_dataset
-
 """
 Abbreviations:
     MLP: mirror-Langmuir probe
