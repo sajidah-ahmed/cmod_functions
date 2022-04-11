@@ -68,7 +68,9 @@ def get_apd_frames(shot_number: int):
     return time, frames
 
 
-def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None, subtract_background=False):
+def generate_raw_apd_dataset(
+    shot_number: int, time_start=None, time_end=None, subtract_background=False
+):
     """
     Generates an xarray dataset containing raw APD data for a shot
 
@@ -76,6 +78,7 @@ def generate_raw_apd_dataset(shot_number: int, time_start=None, time_end=None, s
         shot_number: Shot number(s) of interest.
         time_start: The beginning of the time window in seconds. Set to None by default.
         time_end: The end of the time window in seconds. Set to None by default.
+        subtract_backgound: Option to subtract low light levels. Default to False.
 
     Returns:
         dataset: An xarray dataset containing raw APD data for all pixels:
