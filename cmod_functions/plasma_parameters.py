@@ -1,12 +1,41 @@
 import MDSplus as mds
 
 
+def get_line_integrated_density(shot_number):
+    """
+    Extract line integrated density data.
+    To get line-averaged density, you can use the function in this package, but it will only exist for certain shots.
+    Otherwise divide by the chord length - this is derived from the equilibrium reconstruction.
+
+    Args:
+        shot_number: shot number(s) of interest.
+
+    Returns:
+        line_integrated_density_time: Time data for the ne_bar data.
+        line_integrated_density: Line-integrated density measured in per sqaure metres (m^-2).
+    """
+
+    c = mds.Connection("alcdata")
+    c.openTree("electrons", shot_number)
+
+    line_integrated_density_dataname = f"\ELECTRONS::TOP.TCI.RESULTS.NL_04"
+
+    line_integrated_density = c.get(line_integrated_density_dataname).data()
+    line_integrated_density_time = c.get(
+        "dim_of(" + line_integrated_density_dataname + ")"
+    ).data()
+
+    return line_integrated_density_time, line_integrated_density
+
+
 def get_line_averaged_density(shot_number):
     """
     Extract line averaged density data.
 
     Args:
         shot_number: shot number(s) of interest.
+                     NOTE: The data for a particular shot may not exist. 
+                           They're only generated if someone asked for them previously.
 
     Returns:
         line_averaged_density_time: Time data for the ne_bar data.
