@@ -99,3 +99,64 @@ def get_toroidal_magnetic_field(shot_number):
 
 
     return toroidal_magnetic_field_time, toroidal_magnetic_field
+
+
+def average_plasma_parameter(
+    variable_data, variable_time, time_start=None, time_end=None
+):
+    """
+    Use: Calculates the average values of your plasma parameters
+
+    Inputs:
+        variable_data: Data of your variable.
+                       This can be the plasma current, the line-averaged density, toroidal magnetic field etc.
+        variable_time: Corresponding time data of your variable.
+        time_start: The starting time of your time window.
+                    Default set to None, which will take the minimum time of time data.
+        time_end: The end time of your time window.
+                  Default set to None, which will take the maximum time of time data.
+
+    Outputs:
+        variable_mean: Mean value of variable in the time window of choice.
+
+    """
+
+    if (time_start is None) & (time_end is None):
+        time_start, time_end = np.amin(variable_time), np.amax(variable_time)
+
+    time_interval = (variable_time < time_end) & (variable_time > time_start)
+    variable_range = variable_data[time_interval]
+    variable_mean = variable_range.mean()
+
+    return variable_mean
+
+
+def greenwald_density_limit(average_plasma_current, minor_radius=0.22):
+    """
+    Use: Calculates the Greenwald density limit
+
+    Inputs:
+        average_plasma_current: The average plasma current in Mega Amps.
+        minor_radius: The minor radius in metres.
+                      This is 0.22 metres for Alcator C-Mod by default.
+
+    Outputs:
+        greenwald_density_limit: The density limit in units of 10^20 m^-3.
+
+    """
+    return average_plasma_current / (np.pi * minor_radius * minor_radius)
+
+
+def greenwald_fraction(average_line_averaged_density, greenwald_density):
+    """
+    Use: Calculates the Greenwald fraction which the ratio between the average line-averaged density and the Greenwald density limit.
+
+    Inputs:
+        average_line_averaged_density: The average line-averaged density in 10^20 m^-3 units.
+        greenwald_density: The Greenwald density limit in 10^20 m^-3 units.
+
+    Outputs:
+        greenwald_fraction: The Greenwald fraction - should be between 0 and 1.
+
+    """
+    return average_line_averaged_density / greenwald_density
