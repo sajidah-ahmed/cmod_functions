@@ -32,6 +32,6 @@ def get_outergap_efit(shot_number, tree="ANALYSIS"):
         tree_path = "\ANALYSIS::EFIT_AEQDSK:ORIGHT"
 
     outergap_efit = c.get(tree_path)
-    time_outergap_efit = c.get("dim_of(" + tree_path + ")").data()
+    time_outergap_efit = c.get(f"dim_of({tree_path})").data()
 
     return time_outergap_efit, outergap_efit
