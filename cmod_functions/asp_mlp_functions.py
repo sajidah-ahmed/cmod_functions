@@ -127,3 +127,53 @@ def get_raw_asp_mlp_data(
         return asp_mlp_time[time_interval], asp_mlp_data[time_interval]
 
     return asp_mlp_time, asp_mlp_data
+
+
+def generate_average_mlp_data(shot_number: int, variable_name: str):
+    """
+    Generates average raw MLP data.
+
+    Args:
+        shot_number: Shot number(s) of interest.
+        probe_pin_number: Particluar probe tip usually from 0 to 3.
+        variable_name: The variable of interests
+            variables_dictionary_asp_mlp = {
+            "ne": "DENSITY_FIT",
+            "Is": "ISAT_FIT",
+            "Js": "JSAT_FIT",
+            "Vp": "PHI_FIT",
+            "Te": "TE_FIT",
+            "Vf": "VF_FIT"}
+
+    Returns:
+        time_common: Common time data of all four probe bins collecting data.
+        time_series_average: Average raw MLP data of a particular variable from all four pin.
+    """
+
+    import numpy as np
+    from functools import reduce
+
+    time_series_list = []
+    time_list = []
+
+    for probe_pin_number in [0, 1, 2, 3]:
+        asp_mlp_time, asp_mlp_data = get_raw_asp_mlp_data(
+            variable_name, probe_pin_number, shot_number
+        )
+
+        time_series_list.append(asp_mlp_data)
+        time_list.append(asp_mlp_time)
+
+    time_common = reduce(np.intersect1d, time_list)
+
+    time_series_average = 0.25 * (
+        time_series_list[0]
+        + time_series_list[1]
+        + time_series_list[2]
+        + time_series_list[3]
+    )
+
+    return (
+        time_common,
+        time_series_average,
+    )
