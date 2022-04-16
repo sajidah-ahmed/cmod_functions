@@ -45,7 +45,7 @@ def get_apd_frames(shot_number: int):
     frames_path = "GPI.APD_ARRAY.FRAMES"
 
     frames = c.get(frames_path).data()
-    time = c.get("dim_of(" + frames_path + ")").data()
+    time = c.get(f"dim_of({frames_path})").data()
 
     # Sometimes, the time dimension is not the same as the number of frames.
     # need to force them to be the same by adding time points if the time dimension is smaller than the number of frames
@@ -64,7 +64,7 @@ def get_apd_frames(shot_number: int):
         )
         time = np.append(time, new_times)
     elif time_array_length > frame_array_length:
-        time = time[0:frame_array_length]
+        time = time[:frame_array_length]
 
     return time, frames
 
@@ -139,10 +139,9 @@ def _create_apd_signal_array(frames, moving_window, subtract_background):
         # Criterion to find dead pixels
         if raw_signal.std() < 0.01:
             raw_signal[:] = np.nan
-        else:
-            if subtract_background:
-                offset = np.mean(raw_signal[:200])
-                raw_signal = offset - raw_signal[:]
+        elif subtract_background:
+            offset = np.mean(raw_signal[:200])
+            raw_signal = offset - raw_signal[:]
 
         time_series = raw_signal[2 * moving_window : -2 * moving_window]
         apd_signal_array[i, :] = time_series[:]
