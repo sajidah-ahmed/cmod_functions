@@ -4,6 +4,7 @@ import MDSplus as mds
 Abbreviations:
     MLP: mirror-Langmuir probe
     ASP: A-port scanning probe (scans in the horizonal direction)
+    ISP: Ion-sensitive probe
 """
 
 # Node names for ASP MLP data. Use this convention.
@@ -17,6 +18,8 @@ variables_dictionary_asp_mlp = {
 }
 
 variables_dictionary_asp = {"Is": "I_FAST", "Vf": "V_FAST"}
+
+variables_dictionary_asp_isp = {"Is": "I_SLOW", "Vf": "V_SLOW"}
 
 
 def get_plunge_depth(shot_number: int):
@@ -126,6 +129,72 @@ def get_raw_asp_data(
         return asp_time[time_interval], asp_data[time_interval]
 
     return asp_time, asp_data
+
+
+def get_asp_isp_rho(shot_number: int, probe_pin_number: int):
+    """
+    Extracts the rho, the distance relative to the last-closed flux surface, of ISP probe tip.
+    Check the logbook whether the shot you're after used the ISP.
+
+    Args:
+        shot_number: Shot number(s) of interest.
+        probe_pin_number: Particluar probe tip usually from 0 to 3.
+
+    Returns:
+        rho_time: Time data for rho
+        rho: The probe position relative to the separatrix
+    """
+
+    c = mds.Connection("alcdata")
+    c.openTree("edge", shot_number)
+
+    dataname_rho = f"\EDGE::TOP.PROBES.ASP.ISP.P{probe_pin_number}:RHO"
+
+    rho = c.get(dataname_rho)
+    rho_time = c.get(f"dim_of({dataname_rho})").data()
+
+    return rho_time, rho
+
+
+def get_raw_asp_isp_data(
+    shot_number: int,
+    probe_pin_number: int,
+    variable_name: str,
+    time_start=None,
+    time_end=None,
+):
+    """
+    Extracts raw ISP data. Check the logbook whether the shot you're after used the ISP.
+
+    Args:
+        shot_number: Shot number(s) of interest.
+        probe_pin_number: Particluar probe tip usually from 0 to 3.
+        variable_name: The variable of interests
+            variables_dictionary_asp_isp = {
+            "Is": "I_SLOW",
+            "Vf": "V_SLOW"}
+        time_start: Start time of interest.
+        time_end: End time of interest.
+
+    Returns:
+        asp_isp_time: Time data for ISP.
+        asp__ispdata: Raw ISP data of a particular variable.
+    """
+
+    c = mds.Connection("alcdata")
+    c.openTree("edge", shot_number)
+
+    dataname = f"\EDGE::TOP.PROBES.ASP.ISP.P{probe_pin_number}:{variables_dictionary_asp_isp[variable_name]}"
+
+    asp_isp_data = c.get(dataname).data()
+
+    asp_isp_time = c.get(f"dim_of({dataname})").data()
+
+    if (time_start is not None) & (time_end is not None):
+        time_interval = (asp_isp_time > time_start) & (asp_isp_time < time_end)
+        return asp_isp_time[time_interval], asp_isp_data[time_interval]
+
+    return asp_isp_time, asp_isp_data
 
 
 def get_asp_mlp_rho(shot_number: int, probe_pin_number: int):
