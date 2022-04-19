@@ -159,7 +159,7 @@ def get_raw_asp_mlp_data(
     time_end=None,
 ):
     """
-    Extracts raw mirror-Langmuir probe (MLP) data.
+    Extracts raw mirror-Langmuir probe (MLP) data. Shots from 2012 onwards have MLP data. Please interrogate the logbooks.
 
     Args:
         shot_number: Shot number(s) of interest.
