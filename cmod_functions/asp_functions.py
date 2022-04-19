@@ -16,7 +16,7 @@ variables_dictionary_asp_mlp = {
     "Vf": "VF_FIT",
 }
 
-variables_dictionary_asp = {"Is": "I_SLOW", "Vf": "V_SLOW"}
+variables_dictionary_asp = {"Is": "I_FAST", "Vf": "V_FAST"}
 
 
 def get_plunge_depth(shot_number: int):
@@ -102,8 +102,8 @@ def get_raw_asp_data(
         probe_pin_number: Particluar probe tip usually from 0 to 3.
         variable_name: The variable of interests
             variables_dictionary_asp = {
-            "Is": "I_SLOW",
-            "Vf": "V_SLOW"}
+            "Is": "I_FAST",
+            "Vf": "V_FAST"}
         time_start: Start time of interest.
         time_end: End time of interest.
 
