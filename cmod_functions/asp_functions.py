@@ -16,6 +16,8 @@ variables_dictionary_asp_mlp = {
     "Vf": "VF_FIT",
 }
 
+variables_dictionary_asp = {"Is": "I_SLOW", "Vf": "V_SLOW"}
+
 
 def get_plunge_depth(shot_number: int):
     """
@@ -60,7 +62,6 @@ def get_probe_origin(shot_number: int):
     return origin
 
 
-
 def get_asp_rho(shot: int, probe_pin_number: int):
     """
     Extracts the rho, the distance relative to the last-closed flux surface, of a ASP probe tip.
@@ -83,6 +84,47 @@ def get_asp_rho(shot: int, probe_pin_number: int):
     rho_time = c.get(f"dim_of({dataname_rho})").data()
 
     return rho_time, rho
+
+
+def get_raw_asp_data(
+    shot_number: int,
+    probe_pin_number: int,
+    variable_name: str,
+    time_start=None,
+    time_end=None,
+):
+    """
+    Extracts raw ASP data.
+
+    Args:
+        shot_number: Shot number(s) of interest.
+        probe_pin_number: Particluar probe tip usually from 0 to 3.
+        variable_name: The variable of interests
+            variables_dictionary_asp = {
+            "Is": "I_SLOW",
+            "Vf": "V_SLOW"}
+        time_start: Start time of interest.
+        time_end: End time of interest.
+
+    Returns:
+        asp_time: Time data for ASP.
+        asp_data: Raw ASP data of a particular variable.
+    """
+
+    c = mds.Connection("alcdata")
+    c.openTree("edge", shot_number)
+
+    dataname = f"\EDGE::TOP.PROBES.ASP.P{probe_pin_number}:{variables_dictionary_asp[variable_name]}"
+
+    asp_data = c.get(dataname).data()
+
+    asp_time = c.get(f"dim_of({dataname})").data()
+
+    if (time_start is not None) & (time_end is not None):
+        time_interval = (asp_time > time_start) & (asp_time < time_end)
+        return asp_time[time_interval], asp_data[time_interval]
+
+    return asp_time, asp_data
 
 
 def get_asp_mlp_rho(shot_number: int, probe_pin_number: int):
