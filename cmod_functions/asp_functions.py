@@ -60,29 +60,6 @@ def get_probe_origin(shot_number: int):
     return origin
 
 
-def get_asp_mlp_rho(shot_number: int, probe_pin_number: int):
-    """
-    Extracts the rho, the distance relative to the last-closed flux surface, of an MLP probe tip.
-
-    Args:
-        shot_number: Shot number(s) of interest.
-        probe_pin_number: Particluar probe tip usually from 0 to 3.
-
-    Returns:
-        rho_time: Time data for rho
-        rho: The probe position relative to the separatrix
-    """
-
-    c = mds.Connection("alcdata")
-    c.openTree("edge", shot_number)
-
-    dataname_rho = f"\EDGE::TOP.PROBES.ASP.MLP.P{probe_pin_number}:RHO"
-
-    rho = c.get(dataname_rho)
-    rho_time = c.get(f"dim_of({dataname_rho})").data()
-
-    return rho_time, rho
-
 
 def get_asp_rho(shot: int, probe_pin_number: int):
     """
@@ -101,6 +78,30 @@ def get_asp_rho(shot: int, probe_pin_number: int):
     c.openTree("edge", shot)
 
     dataname_rho = f"\EDGE::TOP.PROBES.ASP.P{probe_pin_number}:RHO"
+
+    rho = c.get(dataname_rho)
+    rho_time = c.get(f"dim_of({dataname_rho})").data()
+
+    return rho_time, rho
+
+
+def get_asp_mlp_rho(shot_number: int, probe_pin_number: int):
+    """
+    Extracts the rho, the distance relative to the last-closed flux surface, of an MLP probe tip.
+
+    Args:
+        shot_number: Shot number(s) of interest.
+        probe_pin_number: Particluar probe tip usually from 0 to 3.
+
+    Returns:
+        rho_time: Time data for rho
+        rho: The probe position relative to the separatrix
+    """
+
+    c = mds.Connection("alcdata")
+    c.openTree("edge", shot_number)
+
+    dataname_rho = f"\EDGE::TOP.PROBES.ASP.MLP.P{probe_pin_number}:RHO"
 
     rho = c.get(dataname_rho)
     rho_time = c.get(f"dim_of({dataname_rho})").data()
