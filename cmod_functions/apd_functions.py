@@ -176,6 +176,11 @@ def _create_xr_dataset(apd_signal_array, time, time_start, time_end, R, Z):
         frames = frames[:, :, time_interval]
         time = time[time_interval]
 
+    # flip along x so that x=0 refers to the lowest R value
+    frames = np.flip(frames, axis=1)
+    R = np.flip(R, axis=1)
+    Z = np.flip(Z, axis=1)
+
     return xr.Dataset(
         {"frames": (["y", "x", "time"], frames)},
         coords={"R": (["y", "x"], R), "Z": (["y", "x"], Z), "time": (["time"], time)},
