@@ -83,7 +83,7 @@ def generate_raw_apd_dataset(
                             Default to False, where this will return just the raw signal, uninverted.
 
     Returns:
-        dataset: An xarray dataset containing raw APD data for all pixels:
+        dataset: An xarray dataset containing raw APD data for all pixels: x, y = [0,0] refers to the lowest R and Z values.
             time: Time array in seconds.
             frames: Raw frames extracted for all pixels. These require further processing before analysis.
             R: Major radius coordinates in centimetres.
