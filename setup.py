@@ -17,7 +17,7 @@ setup(
     license="MiT",
     version="1.0",
     packages=["cmod_functions"],
-    python_requires=">=3.8",
+    python_requires=">=3.0",
     install_requires=[
         "numpy>=1.18.0",
         "scipy>=1.4.0",
