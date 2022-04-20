@@ -83,7 +83,7 @@ def generate_raw_apd_dataset(
                             Default to False, where this will return just the raw signal, uninverted.
 
     Returns:
-        dataset: An xarray dataset containing raw APD data for all pixels:
+        dataset: An xarray dataset containing raw APD data for all pixels: x, y = [0,0] refers to the lowest R and Z values.
             time: Time array in seconds.
             frames: Raw frames extracted for all pixels. These require further processing before analysis.
             R: Major radius coordinates in centimetres.
@@ -180,7 +180,7 @@ def _create_xr_dataset(apd_signal_array, time, time_start, time_end, R, Z):
     frames = np.flip(frames, axis=1)
     R = np.flip(R, axis=1)
     Z = np.flip(Z, axis=1)
-    
+
     return xr.Dataset(
         {"frames": (["y", "x", "time"], frames)},
         coords={"R": (["y", "x"], R), "Z": (["y", "x"], Z), "time": (["time"], time)},
