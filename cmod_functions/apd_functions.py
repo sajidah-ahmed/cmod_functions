@@ -70,15 +70,18 @@ def get_apd_frames(shot_number: int):
 
 
 def generate_raw_apd_dataset(
-    shot_number: int, time_start=None, time_end=None, subtract_background=False
+    shot_number: int,
+    time_start: float = -np.inf,
+    time_end: float = np.inf,
+    subtract_background=False,
 ):
     """
     Generates an xarray dataset containing raw APD data for a shot
 
     Args:
         shot_number: Shot number(s) of interest.
-        time_start: The beginning of the time window in seconds. Set to None by default.
-        time_end: The end of the time window in seconds. Set to None by default.
+        time_start: The beginning of the time window in seconds. Set to first frame by default.
+        time_end: The end of the time window in seconds. Set to last frame by default.
         subtract_background: Option to subtract low light levels which will return an inverted signal.
                             Default to False, where this will return just the raw signal, uninverted.
 
@@ -156,8 +159,8 @@ def _create_xr_dataset(apd_signal_array, time, time_start, time_end, R, Z):
     Args:
         apd_signal_array: Raw APD signal array.
         time: Time array in seconds.
-        time_start: The beginning of the time window in seconds. Set to None by default.
-        time_end: The end of the time window in seconds. Set to None by default.
+        time_start: The beginning of the time window in seconds. Set to first frame by default.
+        time_end: The end of the time window in seconds. Set to last frame by default.
         R: Major radius coordinates in centimetres.
         Z: Height array (above the machine midplane) in centimetres.
 
@@ -171,10 +174,9 @@ def _create_xr_dataset(apd_signal_array, time, time_start, time_end, R, Z):
 
     frames = np.swapaxes(np.reshape(apd_signal_array, (9, 10, len(time))), 0, 1)
 
-    if (time_start is not None) & (time_end is not None):
-        time_interval = (time > time_start) & (time < time_end)
-        frames = frames[:, :, time_interval]
-        time = time[time_interval]
+    time_interval = (time > time_start) & (time < time_end)
+    frames = frames[:, :, time_interval]
+    time = time[time_interval]
 
     # flip along x so that x=0 refers to the lowest R value
     frames = np.flip(frames, axis=1)

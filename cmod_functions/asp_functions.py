@@ -1,4 +1,5 @@
 import MDSplus as mds
+import numpy as np
 
 """
 Abbreviations:
@@ -94,8 +95,8 @@ def get_raw_asp_data(
     shot_number: int,
     probe_pin_number: int,
     variable_name: str,
-    time_start=None,
-    time_end=None,
+    time_start: float = -np.inf,
+    time_end: float = np.inf,
 ):
     """
     Extracts raw ASP data. Shots before 2012 have ASP data.
@@ -107,8 +108,8 @@ def get_raw_asp_data(
             variables_dictionary_asp = {
             "Is": "I_FAST",
             "Vf": "V_FAST"}
-        time_start: Start time of interest.
-        time_end: End time of interest.
+        time_start: Start time of interest. Set to first frame by default.
+        time_end: End time of interest. Set to last frame by default.
 
     Returns:
         asp_time: Time data for ASP.
@@ -124,11 +125,8 @@ def get_raw_asp_data(
 
     asp_time = c.get(f"dim_of({dataname})").data()
 
-    if (time_start is not None) & (time_end is not None):
-        time_interval = (asp_time > time_start) & (asp_time < time_end)
-        return asp_time[time_interval], asp_data[time_interval]
-
-    return asp_time, asp_data
+    time_interval = (asp_time > time_start) & (asp_time < time_end)
+    return asp_time[time_interval], asp_data[time_interval]
 
 
 def get_asp_isp_rho(shot_number: int, probe_pin_number: int):
@@ -160,8 +158,8 @@ def get_raw_asp_isp_data(
     shot_number: int,
     probe_pin_number: int,
     variable_name: str,
-    time_start=None,
-    time_end=None,
+    time_start: float = -np.inf,
+    time_end: float = np.inf,
 ):
     """
     Extracts raw ISP data. Check the logbook whether the shot you're after used the ISP.
@@ -173,8 +171,8 @@ def get_raw_asp_isp_data(
             variables_dictionary_asp_isp = {
             "Is": "I_SLOW",
             "Vf": "V_SLOW"}
-        time_start: Start time of interest.
-        time_end: End time of interest.
+        time_start: Start time of interest. Set to first frame by default.
+        time_end: End time of interest. Set to last frame by default.
 
     Returns:
         asp_isp_time: Time data for ISP.
@@ -190,11 +188,8 @@ def get_raw_asp_isp_data(
 
     asp_isp_time = c.get(f"dim_of({dataname})").data()
 
-    if (time_start is not None) & (time_end is not None):
-        time_interval = (asp_isp_time > time_start) & (asp_isp_time < time_end)
-        return asp_isp_time[time_interval], asp_isp_data[time_interval]
-
-    return asp_isp_time, asp_isp_data
+    time_interval = (asp_isp_time > time_start) & (asp_isp_time < time_end)
+    return asp_isp_time[time_interval], asp_isp_data[time_interval]
 
 
 def get_asp_mlp_rho(shot_number: int, probe_pin_number: int):
@@ -226,8 +221,8 @@ def get_raw_asp_mlp_data(
     shot_number: int,
     probe_pin_number: int,
     variable_name: str,
-    time_start=None,
-    time_end=None,
+    time_start: float = -np.inf,
+    time_end: float = np.inf,
 ):
     """
     Extracts raw mirror-Langmuir probe (MLP) data. Shots from 2012 onwards have MLP data. Please interrogate the logbooks.
@@ -243,8 +238,8 @@ def get_raw_asp_mlp_data(
             "Vp": "PHI_FIT",
             "Te": "TE_FIT",
             "Vf": "VF_FIT"}
-        time_start: Start time of interest.
-        time_end: End time of interest.
+        time_start: Start time of interest. Set to first frame by default.
+        time_end: End time of interest. Set to last frame by default.
 
     Returns:
         asp_mlp_time: Time data for MLP.
@@ -260,11 +255,8 @@ def get_raw_asp_mlp_data(
 
     asp_mlp_time = c.get(f"dim_of({dataname})").data()
 
-    if (time_start is not None) & (time_end is not None):
-        time_interval = (asp_mlp_time > time_start) & (asp_mlp_time < time_end)
-        return asp_mlp_time[time_interval], asp_mlp_data[time_interval]
-
-    return asp_mlp_time, asp_mlp_data
+    time_interval = (asp_mlp_time > time_start) & (asp_mlp_time < time_end)
+    return asp_mlp_time[time_interval], asp_mlp_data[time_interval]
 
 
 def generate_average_mlp_data(shot_number: int, variable_name: str):
@@ -288,7 +280,6 @@ def generate_average_mlp_data(shot_number: int, variable_name: str):
         time_series_average: Average raw MLP data of a particular variable from all four pin.
     """
 
-    import numpy as np
     from functools import reduce
 
     time_series_list = []
