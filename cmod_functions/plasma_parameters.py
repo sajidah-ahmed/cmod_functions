@@ -21,8 +21,9 @@ def get_line_integrated_density(shot_number):
     line_integrated_density_dataname = "\ELECTRONS::TOP.TCI.RESULTS.NL_04"
 
     line_integrated_density = c.get(line_integrated_density_dataname).data()
-    line_integrated_density_time = c.get(f"dim_of({line_integrated_density_dataname})").data()
-
+    line_integrated_density_time = c.get(
+        f"dim_of({line_integrated_density_dataname})"
+    ).data()
 
     return line_integrated_density_time, line_integrated_density
 
@@ -33,7 +34,7 @@ def get_line_averaged_density(shot_number):
 
     Args:
         shot_number: shot number(s) of interest.
-                     NOTE: The data for a particular shot may not exist. 
+                     NOTE: The data for a particular shot may not exist.
                            They're only generated if someone asked for them previously.
 
     Returns:
@@ -47,8 +48,9 @@ def get_line_averaged_density(shot_number):
     line_averaged_density_dataname = "\ELECTRONS::TOP.TCI.RESULTS.INVERSION.NEBAR_EFIT"
 
     line_averaged_density = c.get(line_averaged_density_dataname).data()
-    line_averaged_density_time = c.get(f"dim_of({line_averaged_density_dataname})").data()
-
+    line_averaged_density_time = c.get(
+        f"dim_of({line_averaged_density_dataname})"
+    ).data()
 
     return line_averaged_density_time, line_averaged_density
 
@@ -95,8 +97,9 @@ def get_toroidal_magnetic_field(shot_number):
     toroidal_magnetic_field_dataname = "\MAGNETICS::BTOR"
 
     toroidal_magnetic_field = -c.get(toroidal_magnetic_field_dataname).data()
-    toroidal_magnetic_field_time = c.get(f"dim_of({toroidal_magnetic_field_dataname})").data()
-
+    toroidal_magnetic_field_time = c.get(
+        f"dim_of({toroidal_magnetic_field_dataname})"
+    ).data()
 
     return toroidal_magnetic_field_time, toroidal_magnetic_field
 
