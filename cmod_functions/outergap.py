@@ -1,5 +1,4 @@
 import MDSplus as mds
-import numpy as np
 
 
 def get_outergap_efit(shot_number, tree="ANALYSIS"):

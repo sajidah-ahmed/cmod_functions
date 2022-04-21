@@ -1,4 +1,5 @@
 import MDSplus as mds
+import numpy as np
 
 
 def get_line_integrated_density(shot_number):
