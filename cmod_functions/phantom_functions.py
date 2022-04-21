@@ -103,6 +103,5 @@ def generate_phantom_dataset(
         print(f"No R and Z data available for shot {shot_number}")
 
         return xr.Dataset(
-            {"frames": (["time", "y", "x"], frames)},
-            coords={"time": (["time"], time)},
+            {"frames": (["time", "y", "x"], frames)}, coords={"time": (["time"], time)},
         )
