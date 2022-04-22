@@ -26,7 +26,6 @@ setup(
         "dask",
         "netCDF4",
         "bottleneck",
-        "xmovie",
     ],
     classifiers=[
         "Intended Audience :: Education",
