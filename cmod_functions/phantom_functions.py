@@ -3,6 +3,23 @@ import numpy as np
 import xarray as xr
 
 
+def get_limiter_coordinates(shot_number: int):
+    """
+    Extracts the radial and poloidal positions of the limiter shadow in major radius coordinates for shots.
+    Args:
+        shot_number: Shot number(s) of interest.
+    Returns:
+        R: Major radius coordinates in centimetres.
+        Z: Height array (above the machine midplane) in centimetres.
+    """
+    c = mds.Connection("alcdata")
+    c.openTree("mhd", shot_number)
+    R_limiter = c.get("\MHD::TOP.analysis.limiters.gh_limiter:R")
+    Z_limiter = c.get("\MHD::TOP.analysis.limiters.gh_limiter:Z")
+
+    return R_limiter, Z_limiter
+
+
 def get_major_radius_phantom_coordinates(shot_number: int):
     """
     Extracts the radial and poloidal positions of the pixels in major radius coordinates for shots.
