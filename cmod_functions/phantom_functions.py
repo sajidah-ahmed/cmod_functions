@@ -5,6 +5,20 @@ import scipy as sp
 from typing import Union
 
 
+def get_integration_time(shot_number: int):
+    """
+    Extract integration time .
+    Args:
+        shot_number: Shot number of interest.
+    Returns:
+        integration time
+    """
+    c = mds.Connection("alcdata")
+    c.openTree("spectroscopy", shot_number)
+
+    return c.get("GPI.PHANTOM.SETTINGS:EXPOS").data()
+
+
 def get_sensitivity_callibration(shot_number: int, filter: str):
     """
     Extract sensitivity callibration data.
@@ -141,11 +155,30 @@ def get_phantom_frames(shot_number: int):
     return times, frames
 
 
+def _normalize_frames(
+    frames: np.ndarray,
+    shot_number: int,
+    filter: Union[None, int] = None,
+):
+    """
+    !!!     Check normalization with Jim    !!!
+    """
+    try:
+        inverse_sensitivity = get_sensitivity_callibration(
+            shot_number=shot_number, filter=filter
+        )
+        integration_time = get_integration_time(shot_number)
+        return np.matmul(frames, inverse_sensitivity) * integration_time
+    except Exception:
+        print(f"No sensitivity callibration data available")
+        return frames
+
+
 def generate_phantom_dataset(
     shot_number: int,
     time_start: float = -np.inf,
     time_end: float = np.inf,
-    filter: Union[None, int] = None,
+    filter: Union[None, str] = None,
 ):
     """
     Generates an xarray dataset containing raw outboard midplane Phantom camera data for a shot
@@ -175,15 +208,7 @@ def generate_phantom_dataset(
     time = time[time_interval]
 
     if filter is not None:
-        try:
-            inverse_sensitivity = get_sensitivity_callibration(
-                shot_number=shot_number, filter=filter
-            )
-            print(frames.shape)
-            frames = np.matmul(frames, inverse_sensitivity)
-            print(frames.shape)
-        except Exception:
-            print(f"No sensitivity callibration data available")
+        frames = _normalize_frames(frames, shot_number, filter)
 
     # Not all shots provide R and Z data
     try:
