@@ -1,7 +1,7 @@
 import MDSplus as mds
 import numpy as np
 import xarray as xr
-import scipy as sp
+from scipy import interpolate
 from typing import Union
 
 
@@ -82,21 +82,35 @@ def calculate_splinted_LCFS(
     efit_time: np.ndarray,
     rbbbs: np.ndarray,
     zbbbs: np.ndarray,
-    nbbbs: np.ndarray,
 ):
-    time_index = np.where(
-        np.abs(efit_time - time_step) == np.min(np.abs(efit_time - time_step))
+    rbbbs = np.array(rbbbs)
+    zbbbs = np.array(zbbbs)
+
+    time_difference = np.absolute(time_step - efit_time)
+    time_index = time_difference.argmin()
+
+    closest_rbbbs = rbbbs[:, time_index]
+    closest_zbbbs = zbbbs[:, time_index]
+
+    f = interpolate.interp1d(
+        closest_zbbbs[closest_rbbbs >= 0.86],
+        closest_rbbbs[closest_rbbbs >= 0.86],
+        kind="cubic",
     )
     z_fine = np.linspace(-0.06, 0.01, 100)
-    r_index = np.where(rbbbs[: nbbbs[time_index[0]], time_index[0]] >= 0.86)
-    r_sep = rbbbs[r_index[:][0], time_index[0]]
-    z_sep = zbbbs[r_index[:][0], time_index[0]]
+    r_fine = f(z_fine)
 
-    zsep_sort = np.sort(z_sep)
-    jt = np.array(np.argsort(z_sep))
-    rsep_sort = r_sep[jt]
+    return r_fine, z_fine
 
-    f = sp.interpolate.CubicSpline(zsep_sort, rsep_sort, bc_type="natural")
+
+def calculate_splinted_limiter(R_limiter: np.ndarray, Z_limiter: np.ndarray):
+
+    f = interpolate.interp1d(
+        Z_limiter,
+        R_limiter,
+        kind="cubic",
+    )
+    z_fine = np.linspace(-0.06, 0.01, 100)
     r_fine = f(z_fine)
 
     return r_fine, z_fine
