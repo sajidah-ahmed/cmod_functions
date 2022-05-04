@@ -3,6 +3,40 @@ import numpy as np
 import xarray as xr
 from scipy import interpolate
 from typing import Union
+import matplotlib.pyplot as plt
+
+
+@xr.register_dataset_accessor("phantom")
+class PhantomAccessor:
+    def __init__(self, xarray_obj):
+
+        self._obj = xarray_obj
+        self.shot_number = self._obj.shot_number
+
+    def plot(self, time_index=0):
+        R_limiter, Z_limiter = get_limiter_coordinates(self.shot_number)
+        R_limiter, Z_limiter = calculate_splinted_limiter(R_limiter, Z_limiter)
+
+        rbbbs, zbbbs, _, efit_time = get_separatrix_coordinates(self.shot_number)
+        R_LCFS, Z_LCFS = calculate_splinted_LCFS(
+            time_step=self._obj.time.values[time_index],
+            efit_time=efit_time,
+            rbbbs=rbbbs,
+            zbbbs=zbbbs,
+        )
+        CS = plt.contourf(
+            self._obj.R / 100,
+            self._obj.Z / 100,
+            self._obj.frames.isel(time=time_index).values[:, ::-1],
+            64,
+        )
+        plt.colorbar(CS)
+        plt.plot(R_LCFS, Z_LCFS)
+        plt.plot(R_limiter, Z_limiter)
+        plt.xlim([0.85, 0.93])
+        plt.ylim([-0.07, 0.01])
+        plt.xlabel("R_maj [m]")
+        plt.ylabel("Z [m]")
 
 
 def get_integration_time(shot_number: int):
@@ -97,7 +131,7 @@ def calculate_splinted_LCFS(
         closest_rbbbs[closest_rbbbs >= 0.86],
         kind="cubic",
     )
-    z_fine = np.linspace(-0.06, 0.01, 100)
+    z_fine = np.linspace(-0.08, 0.01, 100)
     r_fine = f(z_fine)
 
     return r_fine, z_fine
@@ -110,7 +144,7 @@ def calculate_splinted_limiter(R_limiter: np.ndarray, Z_limiter: np.ndarray):
         R_limiter,
         kind="cubic",
     )
-    z_fine = np.linspace(-0.06, 0.01, 100)
+    z_fine = np.linspace(-0.08, 0.01, 100)
     r_fine = f(z_fine)
 
     return r_fine, z_fine
@@ -237,6 +271,7 @@ def generate_phantom_dataset(
                 "Z": (["y", "x"], Z),
                 "time": (["time"], time),
             },
+            attrs=dict(shot_number=shot_number),
         )
 
     except Exception:
@@ -245,4 +280,5 @@ def generate_phantom_dataset(
         return xr.Dataset(
             {"frames": (["time", "y", "x"], frames)},
             coords={"time": (["time"], time)},
+            attrs=dict(shot_number=shot_number),
         )
