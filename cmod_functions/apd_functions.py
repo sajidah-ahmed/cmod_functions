@@ -192,6 +192,7 @@ def _create_xr_dataset(apd_signal_array, time, time_start, time_end, R, Z):
 def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
     """
     Converts radial and poloidal coordinates to flux surface coordinates, rho.
+    Thanks to Jim for the code!
 
     Args:
         R: Major radius (in cm) array for the coordinate pair to be mapped to rho.
@@ -210,7 +211,7 @@ def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
             to the distance beyond the separatrix in the horizontal plane
             that is defined by the Z of the magnetic axis (ZMAGX) at
             time time_array(i). Rho is returned in cm, with positive sign being outside
-            the separatrix and minus sign being inside the separatrix.
+            the separatrix and minus sign being inside the sSeparatrix.
 
     """
 
