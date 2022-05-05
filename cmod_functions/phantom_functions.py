@@ -31,8 +31,8 @@ class PhantomAccessor:
             64,
         )
         plt.colorbar(CS)
-        plt.plot(R_LCFS, Z_LCFS)
-        plt.plot(R_limiter, Z_limiter)
+        plt.plot(R_LCFS, Z_LCFS, c="tab:orange")
+        plt.plot(R_limiter, Z_limiter, c="tab:orange")
         plt.xlim([0.85, 0.93])
         plt.ylim([-0.07, 0.01])
         plt.xlabel("R_maj [m]")
@@ -206,7 +206,7 @@ def get_phantom_frames(shot_number: int):
 def _normalize_frames(
     frames: np.ndarray,
     shot_number: int,
-    filter: Union[None, int] = None,
+    filter: Union[None, str] = None,
 ):
     """
     !!!     Check normalization with Jim    !!!
@@ -216,7 +216,7 @@ def _normalize_frames(
             shot_number=shot_number, filter=filter
         )
         integration_time = get_integration_time(shot_number)
-        return np.matmul(frames, inverse_sensitivity) * integration_time
+        return (frames[None, :, :] * inverse_sensitivity)[0] / integration_time
     except Exception:
         print(f"No sensitivity callibration data available")
         return frames
