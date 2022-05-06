@@ -307,6 +307,6 @@ def major_radius_to_average_rho(
     )
 
     rho_mean = np.mean(rho_array, axis=1)
-    rho_time_averaged = np.swapaxes(np.reshape(rho_mean, (9, 10)), 0, 1)
+    rho_time_averaged = np.flip(np.swapaxes(np.reshape(rho_mean, (9, 10)), 0, 1), axis=1)
 
     return R, Z, rho_time_averaged
