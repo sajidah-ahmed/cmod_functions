@@ -209,7 +209,9 @@ def _normalize_frames(
     filter: Union[None, str] = None,
 ):
     """
-    !!!     Check normalization with Jim    !!!
+    Sensitivity calibration using D_alpha or He-587 filter.
+
+    Further testing recommended since this function hasn't been used so far.
     """
     try:
         inverse_sensitivity = get_sensitivity_callibration(
