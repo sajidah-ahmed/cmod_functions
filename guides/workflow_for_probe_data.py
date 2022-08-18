@@ -42,10 +42,10 @@ for shot in shot_list:
             )
 
             # Set up a filename that makes sense. Here we are saving the individual parameters from each pin
-            # If you printed this, for example, it'll look like: asp_mlp_1160616007_Is_p1.npz
+            # If you printed this, for example, it'll look like: asp_mlp_1160616007_Is_pin_1.npz
             # This means that the file has ion saturation data from probe pin 1 for shot 1160616007
 
-            file_name = f"asp_mlp_{shot}_{variable}_p{probe}.npz"
+            file_name = f"asp_mlp_{shot}_{variable}_pin_{probe}.npz"
 
             np.savez(folder_name + filename, time=time, raw_data=raw_data)
 
