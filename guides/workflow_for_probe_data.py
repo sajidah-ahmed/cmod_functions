@@ -5,6 +5,9 @@ Do not run this code until you have edited the code to save the files in the des
 
 In this code I am saving mirror-Langmuir probe data.
 
+The following shots are dwelling. You can also wish to save the rho data, which is the probe position in flux coordinates.
+For the sake of this example, we will just save the time series.
+
 
 """
 
