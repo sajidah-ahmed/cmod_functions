@@ -15,7 +15,7 @@ import numpy as np
 import cmod_functions as cmod_functions
 
 
-# Change this path!
+# ATTENTION: Change this path!
 # Set up the folder where you wish to save the data
 folder_name = f"/home/saahmed/raw_asp_mlp/"
 
