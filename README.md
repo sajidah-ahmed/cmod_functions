@@ -4,6 +4,7 @@ Guides show how to analyse some of the data or use the functions if you're doing
 * How to use the xarray function to generate APD data.
 * Plot profiles with scanning mirror-Langmuir probe data.
 * How to download Phantom camera data and turn it into an animation
+* How to stay organised on downloading fusion machine data - just as important!
 
 # Prerequisites
 MDSplus: https://www.mdsplus.org/
