@@ -16,6 +16,7 @@ import cmod_functions as cmod_functions
 
 
 # Change this path!
+# Set up the folder where you wish to save the data
 folder_name = f"/home/saahmed/raw_asp_mlp/"
 
 # Specify the shots of interest
