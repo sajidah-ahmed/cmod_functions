@@ -1,4 +1,4 @@
-'''
+"""
 
 This is code in an example on how to stay organised!
 Do not run this code until you have edited the code to save the files in the desired directory.
@@ -6,7 +6,7 @@ Do not run this code until you have edited the code to save the files in the des
 In this code I am saving mirror-Langmuir probe data.
 
 
-'''
+"""
 
 
 # Relevant imports
@@ -35,8 +35,10 @@ for shot in shot_list:
         for variable in variable_list:
 
             # Get raw data
-        
-            time, raw_data = cmod_functions.get_raw_asp_mlp_data(shot, probe_pin, variable)
+
+            time, raw_data = cmod_functions.get_raw_asp_mlp_data(
+                shot, probe_pin, variable
+            )
 
             # Set up a filename that makes sense. Here we are saving the individual parameters from each pin
             # If you printed this, for example, it'll look like: asp_mlp_1160616007_Is_p1.npz
@@ -44,20 +46,9 @@ for shot in shot_list:
 
             file_name = f"asp_mlp_{shot}_{variable}_p{probe}.npz"
 
-            np.savez(folder_name+filename, time=time, raw_data=raw_data)
+            np.savez(folder_name + filename, time=time, raw_data=raw_data)
 
             # It is extremely helpful to know whether the code has run and what it has run
             # Use print statements!
 
             print(f"shot {shot}, {variable}, pin {probe_pin} is complete!")
-
-
-
-
-
-
-
-
-
-
-
