@@ -1,4 +1,5 @@
 # cmod_functions
+ATTENTION: You can only use this repository if you have signed a collaboration agreement with PSFC to use Alcator C-Mod data.
 Functions for extracting data from Alcator C-Mod while on the MFE cluster. \
 Guides show how to analyse some of the data or use the functions if you're doing analysis on the cluster or on your local machine.
 * How to use the xarray function to generate APD data.
