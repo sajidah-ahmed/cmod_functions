@@ -102,6 +102,7 @@ def get_raw_asp_data(
 ):
     """
     Extracts raw ASP data. Shots before 2012 have ASP data.
+    This is just a conventional Langmuir probe.
 
     Args:
         shot_number: Shot number(s) of interest.
