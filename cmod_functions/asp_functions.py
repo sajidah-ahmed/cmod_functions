@@ -6,6 +6,9 @@ Abbreviations:
     MLP: mirror-Langmuir probe
     ASP: A-port scanning probe (scans in the horizonal direction)
     ISP: Ion-sensitive probe
+    
+    Functions saying: asp_mlp or asp_isp means they are NOT a convential Langmuir probe
+    Note: The mirror-Langmuir probe was NOT operational before 2012.
 """
 
 # Node names for ASP MLP data. Use this convention.
