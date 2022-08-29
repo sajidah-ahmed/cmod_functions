@@ -74,7 +74,7 @@ def get_probe_origin(shot_number: int):
 def get_asp_rho(shot: int, probe_pin_number: int):
     """
     Extracts the rho, the distance relative to the last-closed flux surface, of a ASP probe tip.
-    Shots before 2012 have ASP data.
+    Shots before 2012 have ASP data (i.e. conventional Langmuir probe).
 
     Args:
         shot_number: Shot number(s) of interest.
