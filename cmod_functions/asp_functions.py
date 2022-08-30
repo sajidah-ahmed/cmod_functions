@@ -21,7 +21,7 @@ variables_dictionary_asp_mlp = {
     "Vf": "VF_FIT",
 }
 
-# Node names for ASP data. Use this convention.
+# Node names for ASP FAST data. Use this convention.
 variables_dictionary_asp = {"Is": "I_FAST", "Vf": "V_FAST"}
 
 # Node names for ASP ISP data. Use this convention.
@@ -125,7 +125,7 @@ def get_raw_asp_data(
     c = mds.Connection("alcdata")
     c.openTree("edge", shot_number)
 
-    dataname = f"\EDGE::TOP.PROBES.ASP.P{probe_pin_number}:{variables_dictionary_asp[variable_name]}"
+    dataname = f"\EDGE::TOP.PROBES.ASP.G_1.P{probe_pin_number}:{variables_dictionary_asp[variable_name]}"
 
     asp_data = c.get(dataname).data()
 
