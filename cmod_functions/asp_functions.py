@@ -21,7 +21,8 @@ variables_dictionary_asp_mlp = {
     "Vf": "VF_FIT",
 }
 
-# Node names for ASP FAST data. Use this convention.
+# Node names for ASP data. Use this convention.
+# Fast data is highly sampled data. Slow data is downsampled data.
 variables_dictionary_asp = {
     "Is_fast": "I_FAST",
     "Vf_fast": "V_FAST",
