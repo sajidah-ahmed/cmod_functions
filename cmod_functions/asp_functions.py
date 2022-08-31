@@ -99,7 +99,7 @@ def get_asp_rho(shot: int, probe_pin_number: int):
     c = mds.Connection("alcdata")
     c.openTree("edge", shot)
 
-    dataname_rho = f"\EDGE::TOP.PROBES.ASP.P{probe_pin_number}:RHO"
+    dataname_rho = f"\EDGE::TOP.PROBES.ASP.G_1.P{probe_pin_number}:RHO"
 
     rho = c.get(dataname_rho)
     rho_time = c.get(f"dim_of({dataname_rho})").data()
