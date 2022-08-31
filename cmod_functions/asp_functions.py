@@ -9,6 +9,11 @@ Abbreviations:
     
     Functions saying: asp_mlp or asp_isp means they are NOT a convential Langmuir probe
     Note: The mirror-Langmuir probe was NOT operational before 2012.
+
+    p0 is the NE pin
+    p1 is the SW pin
+    p2 is the SE pin
+    p3 is the NW pin
 """
 
 # Node names for ASP MLP data. Use this convention.
