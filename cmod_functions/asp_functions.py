@@ -29,8 +29,12 @@ variables_dictionary_asp_mlp = {
 # Node names for ASP data. Use this convention.
 # Fast data is highly sampled data. Slow data is downsampled data.
 variables_dictionary_asp = {
+    "ne_fast": "NE_FAST",
+    "Te_fast": "TE_FAST",
     "Is_fast": "I_FAST",
     "Vf_fast": "V_FAST",
+    "ne_slow": "NE_SLOW",
+    "Te_slow": "TE_SLOW",
     "Is_slow": "I_SLOW",
     "Vf_slow": "V_SLOW",
 }
