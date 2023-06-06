@@ -139,7 +139,7 @@ def _create_apd_signal_array(frames, moving_window, subtract_background):
     for i in range(len(apd_pixel_list)):
         raw_signal = frames[:, apd_pixel_list[i][0], apd_pixel_list[i][1]]
 
-        elif subtract_background:
+        if subtract_background:
             offset = np.mean(raw_signal[:200])
             raw_signal = offset - raw_signal[:]
 
