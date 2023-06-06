@@ -139,9 +139,6 @@ def _create_apd_signal_array(frames, moving_window, subtract_background):
     for i in range(len(apd_pixel_list)):
         raw_signal = frames[:, apd_pixel_list[i][0], apd_pixel_list[i][1]]
 
-        # Criterion to find dead pixels
-        if raw_signal.std() < 0.01:
-            raw_signal[:] = np.nan
         elif subtract_background:
             offset = np.mean(raw_signal[:200])
             raw_signal = offset - raw_signal[:]
