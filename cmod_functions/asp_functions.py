@@ -35,7 +35,7 @@ variables_dictionary_asp_mlp = {
 variables_dictionary_asp = {
     "ne_fast": "NE_FAST",
     "Te_fast": "TE_FAST",
-    "Is_fast": "I_FAST",
+    "Is_fast": "IS_FAST",
     "Vf_fast": "V_FAST",
     "ne_slow": "NE_SLOW",
     "Te_slow": "TE_SLOW",
