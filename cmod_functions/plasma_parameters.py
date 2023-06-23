@@ -226,6 +226,7 @@ def get_plasma_area(shot_number):
 
     return area_time, area
 
+
 def get_plasma_volume(shot_number):
     """
     Extract the plasma volume
@@ -241,7 +242,7 @@ def get_plasma_volume(shot_number):
     c = mds.Connection("alcdata")
     c.openTree("analysis", shot_number)
 
-    volume_dataname = "\ANALYSIS::EFIT_AEQDSK:volume"
+    volume_dataname = "\ANALYSIS::EFIT_AEQDSK:VOLUME"
 
     volume = c.get(volume_dataname).data()
     volume_time = c.get(
@@ -250,6 +251,30 @@ def get_plasma_volume(shot_number):
 
     return volume_time, volume
 
+
+def get_plasma_stored_energy(shot_number):
+    """
+    Extract the plasma stored energy, in units of Joules (J).
+
+    Args:
+        shot_number: shot number(s) of interest.
+
+    Returns:
+        wplasma_time: time data for the stored energy.
+        wplasma: wplasma data. This is in units of J.
+    """
+
+    c = mds.Connection("alcdata")
+    c.openTree("analysis", shot_number)
+
+    wplasma_dataname = "\ANALYSIS::EFIT_AEQDSK:WPLASM"
+
+    wplasma = c.get(wplasma_dataname).data()
+    wplasma_time = c.get(
+        f"dim_of({wplasma_dataname})"
+    ).data()
+
+    return wplasma_time, wplasma
 
 
 def average_plasma_parameter(
