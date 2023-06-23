@@ -202,6 +202,56 @@ def get_delta(shot_number,type):
     return delta_time, delta
 
 
+def get_plasma_area(shot_number):
+    """
+    Extract the poloidal cross-sectional area of the plasma
+
+    Args:
+        shot_number: shot number(s) of interest.
+
+    Returns:
+        area_time: time data for the area..
+        area: area data. This is in units of m^2.
+    """
+
+    c = mds.Connection("alcdata")
+    c.openTree("analysis", shot_number)
+
+    area_dataname = "\ANALYSIS::EFIT_AEQDSK:AREA"
+
+    area = c.get(area_dataname).data()
+    area_time = c.get(
+        f"dim_of({area_dataname})"
+    ).data()
+
+    return area_time, area
+
+def get_plasma_volume(shot_number):
+    """
+    Extract the plasma volume
+
+    Args:
+        shot_number: shot number(s) of interest.
+
+    Returns:
+        volume_time: time data for the volume..
+        volume: volume data. This is in units of m^3.
+    """
+
+    c = mds.Connection("alcdata")
+    c.openTree("analysis", shot_number)
+
+    volume_dataname = "\ANALYSIS::EFIT_AEQDSK:volume"
+
+    volume = c.get(volume_dataname).data()
+    volume_time = c.get(
+        f"dim_of({volume_dataname})"
+    ).data()
+
+    return volume_time, volume
+
+
+
 def average_plasma_parameter(
     variable_data, variable_time, time_start: float = -np.inf, time_end: float = np.inf
 ):
