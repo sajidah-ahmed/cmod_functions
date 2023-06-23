@@ -174,14 +174,15 @@ def get_delta(shot_number,type):
     c.openTree("analysis", shot_number)
 
     if type=="upper":
+
         delta_dataname = "\ANALYSIS::EFIT_AEQDSK:DOUTU"
         delta = c.get(delta_dataname).data()
         delta_time = c.get(
             f"dim_of({delta_dataname})"
         ).data()
     elif type == "lower":
+        
         delta_dataname = "\ANALYSIS::EFIT_AEQDSK:DOUTL"
-
         delta = c.get(delta_dataname).data()
         delta_time = c.get(
             f"dim_of({delta_dataname})"
