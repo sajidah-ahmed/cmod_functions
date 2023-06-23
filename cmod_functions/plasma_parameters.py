@@ -104,6 +104,30 @@ def get_toroidal_magnetic_field(shot_number):
 
     return toroidal_magnetic_field_time, toroidal_magnetic_field
 
+def get_q95(shot_number):
+    """
+    Extract the safety factor, q at 95% flux surface. This is called q95.
+
+    Args:
+        shot_number: shot number(s) of interest.
+
+    Returns:
+        q95_time: time data for q95.
+        q95: q95 data. This is dimensionless.
+    """
+
+    c = mds.Connection("alcdata")
+    c.openTree("analysis", shot_number)
+
+    q95_dataname = "\ANALYSIS::EFIT_AEQDSK:QPSIB"
+
+    q95 = c.get(q95_dataname).data()
+    q95_time = c.get(
+        f"dim_of({q95_dataname})"
+    ).data()
+
+    return q95_time, q95
+
 
 def average_plasma_parameter(
     variable_data, variable_time, time_start: float = -np.inf, time_end: float = np.inf
