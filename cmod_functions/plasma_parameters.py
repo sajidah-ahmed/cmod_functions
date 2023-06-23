@@ -129,6 +129,32 @@ def get_q95(shot_number):
     return q95_time, q95
 
 
+def get_kappa(shot_number):
+    """
+    Extract the elongation/ellipticity at plasma boundary. This is called kappa.
+    This is how it's calculated: http://fusionwiki.ciemat.es/wiki/Ellipticity
+
+    Args:
+        shot_number: shot number(s) of interest.
+
+    Returns:
+        kappa_time: time data for kappa.
+        kappa: kappa data. This is dimensionless.
+    """
+
+    c = mds.Connection("alcdata")
+    c.openTree("analysis", shot_number)
+
+    kappa_dataname = "\ANALYSIS::EFIT_AEQDSK:EOUT"
+
+    kappa = c.get(kappa_dataname).data()
+    kappa_time = c.get(
+        f"dim_of({kappa_dataname})"
+    ).data()
+
+    return kappa_time, kappa
+
+
 def average_plasma_parameter(
     variable_data, variable_time, time_start: float = -np.inf, time_end: float = np.inf
 ):
