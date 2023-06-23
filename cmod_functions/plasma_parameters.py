@@ -155,6 +155,53 @@ def get_kappa(shot_number):
     return kappa_time, kappa
 
 
+def get_delta(shot_number,type):
+    """
+    Extract the traingularity at plasma boundary
+
+    Args:
+        shot_number: shot number(s) of interest.
+        type: "upper" means you return the upper triangularity
+              "lower" means you return the lower triangularity
+              "average" means you return the average of the upper and lower triangularity
+
+    Returns:
+        delta_time: time data for delta.
+        delta: delta data. This is dimensionless.
+    """
+
+    c = mds.Connection("alcdata")
+    c.openTree("analysis", shot_number)
+
+    if type=="upper":
+        delta_dataname = "\ANALYSIS::EFIT_AEQDSK:DOUTU"
+        delta = c.get(delta_dataname).data()
+        delta_time = c.get(
+            f"dim_of({delta_dataname})"
+        ).data()
+    elif type == "lower":
+        delta_dataname = "\ANALYSIS::EFIT_AEQDSK:DOUTL"
+
+        delta = c.get(delta_dataname).data()
+        delta_time = c.get(
+            f"dim_of({delta_dataname})"
+        ).data()
+    elif type == "average":
+
+        delta_upper_dataname = "\ANALYSIS::EFIT_AEQDSK:DOUTU"
+        delta_lower_dataname = "\ANALYSIS::EFIT_AEQDSK:DOUTL"
+
+        delta_upper = c.get(delta_upper_dataname).data()
+        delta_lower = c.get(delta_lower_dataname).data()
+
+        delta = (delta_upper + delta_lower) / 2
+        delta_time = c.get(
+            f"dim_of({delta_upper_dataname})"
+        ).data()
+
+    return delta_time, delta
+
+
 def average_plasma_parameter(
     variable_data, variable_time, time_start: float = -np.inf, time_end: float = np.inf
 ):
