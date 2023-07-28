@@ -90,6 +90,8 @@ def get_toroidal_magnetic_field(shot_number):
     Returns:
         toroidal_magnetic_field_time: time data for toroidal_magnetic_field data.
         toroidal_magnetic_field: toroidal magnetic field measured in Tesla (T).
+                                (-) sign indicates the normal field direction.
+                                (+) sign indicates the reverse field direction.
     """
 
     c = mds.Connection("alcdata")
@@ -97,7 +99,7 @@ def get_toroidal_magnetic_field(shot_number):
 
     toroidal_magnetic_field_dataname = "\MAGNETICS::BTOR"
 
-    toroidal_magnetic_field = -c.get(toroidal_magnetic_field_dataname).data()
+    toroidal_magnetic_field = c.get(toroidal_magnetic_field_dataname).data()
     toroidal_magnetic_field_time = c.get(
         f"dim_of({toroidal_magnetic_field_dataname})"
     ).data()
