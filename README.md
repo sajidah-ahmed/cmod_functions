@@ -12,6 +12,7 @@ MDSplus: https://www.mdsplus.org/
 
 eqtools: https://github.com/PSFCPlasmaTools/eqtools \
 Please be aware that eqtools may not be fully Python3-compatible.
+Please use the version of eqtools **before the changes made in March 11th 2023**. 
 ````
 cd eqtools/eqtools
 vim core.py
