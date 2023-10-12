@@ -186,7 +186,7 @@ def _create_xr_dataset(apd_signal_array, time, time_start, time_end, R, Z):
     )
 
 
-def efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
+def _efit_major_radius_to_rho(R, Z, time_array, shot_number, tree):
     """
     Converts radial and poloidal coordinates to flux surface coordinates, rho.
     Thanks to Jim for the code!
@@ -295,7 +295,7 @@ def major_radius_to_average_rho(
     major_radius_R = np.array(major_radius_position)[:, 0]
     major_radius_Z = np.array(major_radius_position)[:, 1]
 
-    rho_array = efit_major_radius_to_rho(
+    rho_array = _efit_major_radius_to_rho(
         R=major_radius_R,
         Z=major_radius_Z,
         time_array=time,
