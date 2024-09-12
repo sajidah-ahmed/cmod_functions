@@ -2,6 +2,23 @@ import MDSplus as mds
 import numpy as np
 
 
+def get_electron_temperature(shot_number):
+   """
+   Extract electron temperature from the Electron Cyclotron Emission computed from GPC 2
+   (Grating PolyChrometer)
+
+   c = mds.Connection("alcdata")
+   c.openTree("electrons", shot_number)
+
+   electron_temperature_dataname = "\ELECTRONS::TOP.GPC_2.RESULTS:GPC2_TE"
+
+   electron_temperature = c.get(electron_temperature_dataname).data()
+   electron_temperature_time = c.get(
+      f"dim_of({electron_temperature_dataname})"
+   ).data()
+
+   return electron_temperature_time, electron_temperature
+
 def get_line_integrated_density(shot_number):
     """
     Extract line integrated density data.
