@@ -6,6 +6,7 @@ def get_electron_temperature(shot_number):
    """
    Extract electron temperature from the Electron Cyclotron Emission computed from GPC 2
    (Grating PolyChrometer)
+   """
 
    c = mds.Connection("alcdata")
    c.openTree("electrons", shot_number)
