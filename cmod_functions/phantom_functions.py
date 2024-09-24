@@ -90,6 +90,33 @@ def get_limiter_coordinates(shot_number: int):
     return R_limiter, Z_limiter
 
 
+def get_AB_limiter_coordinates(shot_number: int):
+   """
+   Test to extract AB limiter coordinates
+   """
+
+   c = mds.Connection("alcdata")
+   c.openTree("mhd", shot_number)
+   R_limiter = c.get("\MHD::TOP.analysis.limiters.ab_limiter:R")
+   Z_limiter = c.get("\MHD::TOP.analysis.limiters.ab_limiter:Z")
+
+   return R_limiter, Z_limiter
+
+
+def get_K_limiter_coordinates(shot_number: int):
+   """
+   Test to extract K limiter coordinates
+   """
+
+   c = mds.Connection("alcdata")
+   c.openTree("mhd", shot_number)
+   R_limiter = c.get("\MHD::TOP.analysis.limiters.k_limiter:R")
+   Z_limiter = c.get("\MHD::TOP.analysis.limiters.k_limiter:Z")
+
+   return R_limiter, Z_limiter
+
+
+
 def get_separatrix_coordinates(shot_number: int):
     """
     Extracts the radial and poloidal positions of the last closed flux surface (LCFS) in major radius coordinates for shots.
